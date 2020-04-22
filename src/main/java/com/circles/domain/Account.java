@@ -6,8 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 @EqualsAndHashCode(of="id")
 @Builder
 @AllArgsConstructor
@@ -18,16 +17,16 @@ public class Account {
     private Long id;
 
     @Column(unique = true)
-    private String email;
+    private String email; // email login enable
 
     @Column(unique = true)
-    private String nickname;
+    private String nickname; //nick login enable
 
     private String password;
 
-    private boolean emailVerified;
+    private boolean emailVerified; // 인증됫는지
 
-    private String emailCheckTokenl;
+    private String emailCheckToken; // 인증토큰값
 
     private LocalDateTime joinedAt;
 
@@ -37,9 +36,22 @@ public class Account {
 
     private String occupation;
 
-    private String location;
+    private String location; //사는 지역
 
     @Lob @Basic(fetch = FetchType.EAGER)
     private String profileImage;
+
+    //notification
+    private boolean circleCreatedByEmail;
+
+    private boolean circleCreatedByWeb;
+
+    private boolean circleEnrollmentResultByEmail;
+
+    private boolean circleEnrollmentResultByWeb;
+
+    private boolean circleUpdatedResultByEmail;
+
+    private boolean circleUpdatedResultByWeb;
 
 }
