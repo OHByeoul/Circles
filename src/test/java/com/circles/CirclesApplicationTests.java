@@ -1,4 +1,4 @@
-package com.circles.circles;
+package com.circles;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
