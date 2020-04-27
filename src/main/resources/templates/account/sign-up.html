@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -35,7 +35,7 @@
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-        </button>
+        </button> <!-- 반응형 -->
 
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -58,8 +58,70 @@
         </ul>
     </nav>
 
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-</body>
-</html>
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>회원가입</h2>
+        </div>
+        <div class="row justify-content-center">
+            <form class="needs-validation col-sm-6" action="#"
+                  th:action="@{/signup}" th:object="${signUpForm}" method="post" novalidate>
+                <div class="form-group">
+                    <label for="nickname">닉네임</label>
+                    <input id="nickname" type="text" th:field="*{nickname}" class="form-control"
+                           placeholder="yournick" aria-describedby="nicknameHelp" required minlength="4" maxlength="15">
+                    <small id="nicknameHelp" class="form-text text-muted">
+                        4자 이상 15자 이내로 입력하세요(문자와 숫자만 허용)
+                    </small>
+                    <small class="invalid-feedback">닉네임을 입력하세요</small>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">닉넴 에러</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">이메일</label>
+                    <input id="email" type="email" th:field="*{email}" class="form-control"
+                           placeholder="abc@email.com" aria-describedby="emailHelp" required>
+                    <small id="emailHelp" class="form-text text-muted">
+                        님의 이메일을 넣어주세요
+                    </small>
+                    <small class="invalid-feedback">이메일을 입력하세요</small>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">이멜 에러</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">패스워드</label>
+                    <input id="password" type="password" th:field="*{password}" class="form-control"
+                           aria-describedby="passwordHelp" required minlength="6" maxlength="20">
+                    <small id="passwordHelp" class="form-text text-muted">
+                        6자 이상 20자 이내로 입력(영문자, 숫자, 특수기호를 사용가능)
+                    </small>
+                    <small class="invalid-feedback">패스워드를 입력하세요</small>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">비번 에러</small>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-danger btn-block" type="submit"
+                            aria-describedby="submitHelp">가입하기</button>
+                    <!--
+                    <small id="submitHelp" class="form-text text-muted">
+                        <a href="#">약관</a>에 동의하시면 가입하기 버튼을 클릭하세요.
+                    </small>
+                    -->
+                </div>
+            </form>
+        </div>
+               <!--
+                <footer th:fragment="footer">
+                    <div class="row justify-content-center">
+
+                        <img class="mb-2" src="/images/logo_long_kr.jpg" alt="" width="100">
+                        <small class="d-block mb-3 text-muted">&copy; 2020</small>
+                    </div>
+                </footer>
+                        -->
+            </div>
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        </body>
+        </html>
