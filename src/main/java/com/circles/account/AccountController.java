@@ -27,13 +27,18 @@ public class AccountController {
         webDataBinder.addValidators(signUpFormValidator);
     }
 
+    @GetMapping("/")
+    public String index(){
+        return "index";
+    }
+
     @GetMapping("/sign-up")
     public String signUpForm(Model model){
         model.addAttribute("signUpForm", new SignUpForm());
         return "account/sign-up";
     }
 
-    @PostMapping("sign-up")
+    @PostMapping("/sign-up")
     public String signUpSubmit(@Valid @ModelAttribute SignUpForm signUpForm, Errors errors){ //파라미터로 쓰일때 @ModelAttribute 생략가능
         //signUpFormValidator.validate(signUpForm, errors);
         if(errors.hasErrors()){
