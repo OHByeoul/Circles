@@ -2,6 +2,8 @@ package com.circles.account;
 
 import com.circles.domain.Account;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -18,6 +20,7 @@ import javax.validation.Valid;
 public class AccountController {
     private final SignUpFormValidator signUpFormValidator;
     private final AccountRepository accountRepository;
+    private final JavaMailSender javaMailSender;
 
     @InitBinder("signUpFrom")
     public void initBinder(WebDataBinder webDataBinder){
@@ -37,7 +40,7 @@ public class AccountController {
             return "account/sign-up";
         }
 
-        Account account = Account.builder()
+        Account createdAccount = Account.builder()
                 .email(signUpForm.getEmail())
                 .nickname(signUpForm.getNickname())
                 .password(signUpForm.getPassword())
@@ -47,7 +50,14 @@ public class AccountController {
                 .circleUpdatedResultByWeb(true)
                 .build();
 
-        Account saveAccount = accountRepository.save(account);
+        Account saveAccount = accountRepository.save(createdAccount);
+
+        createdAccount.generateEmailCheckToken();
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setSubject("씨씨 써클가입 인증메일입니다.");
+        simpleMailMessage.setTo(createdAccount.getEmail());
+        simpleMailMessage.setText("/check-token?token="+createdAccount.getEmailCheckToken()+"&email="+createdAccount.getEmail());
+        javaMailSender.send(simpleMailMessage);
 
         return "redirect:/";
     }

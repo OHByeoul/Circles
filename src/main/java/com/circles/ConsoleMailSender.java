@@ -1,5 +1,6 @@
 package com.circles;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -12,6 +13,7 @@ import java.io.InputStream;
 
 @Profile("local")
 @Component
+@Slf4j
 public class ConsoleMailSender implements JavaMailSender {
 
     @Override
@@ -46,7 +48,7 @@ public class ConsoleMailSender implements JavaMailSender {
 
     @Override
     public void send(SimpleMailMessage simpleMailMessage) throws MailException {
-
+        log.info(simpleMailMessage.getText());
     }
 
     @Override
