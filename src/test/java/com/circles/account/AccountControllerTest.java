@@ -103,8 +103,8 @@ public class AccountControllerTest {
         saveAccount.generateEmailCheckToken();
 
         mockMvc.perform(get("/check-email-token")
-                    .param("token","asdfasdf")
-                    .param("email","asdf@gmail.com"))
+                    .param("token",account.getEmailCheckToken())
+                    .param("email",account.getEmail()))
                       .andExpect(status().isOk())
                         .andExpect(view().name("account/checkEmail"))
                         .andExpect(model().attributeDoesNotExist("error"));
