@@ -41,12 +41,12 @@ public class AccountService {
 
 
     private void sendSignUpConfirmEmail(Account createdAccount) {
-    SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-    simpleMailMessage.setSubject("씨씨 써클가입 인증메일입니다.");
-    simpleMailMessage.setTo(createdAccount.getEmail());
-    simpleMailMessage.setText("/check-email-token?token="+createdAccount.getEmailCheckToken()+"&email="+createdAccount.getEmail());
-    javaMailSender.send(simpleMailMessage);
-}
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setSubject("씨씨 써클가입 인증메일입니다.");
+        simpleMailMessage.setTo(createdAccount.getEmail());
+        simpleMailMessage.setText("/check-email-token?token="+createdAccount.getEmailCheckToken()+"&email="+createdAccount.getEmail());
+        javaMailSender.send(simpleMailMessage);
+    }
 
     public Account findByEmail(String email) {
          return accountRepository.findByEmail(email);
