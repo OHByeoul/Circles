@@ -19,8 +19,8 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class AccountController {
     private final SignUpFormValidator signUpFormValidator;
-    private final AccountRepository accountRepository;
-    private final JavaMailSender javaMailSender;
+    private final AccountService accountService;
+
 
     @InitBinder("signUpFrom")
     public void initBinder(WebDataBinder webDataBinder){
@@ -45,25 +45,11 @@ public class AccountController {
             return "account/sign-up";
         }
 
-        Account createdAccount = Account.builder()
-                .email(signUpForm.getEmail())
-                .nickname(signUpForm.getNickname())
-                .password(signUpForm.getPassword())
-                .emailVerified(false)
-                .circleCreatedByEmail(true)
-                .circleCreatedByWeb(true)
-                .circleUpdatedResultByWeb(true)
-                .build();
-
-        Account saveAccount = accountRepository.save(createdAccount);
-
-        createdAccount.generateEmailCheckToken();
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setSubject("씨씨 써클가입 인증메일입니다.");
-        simpleMailMessage.setTo(createdAccount.getEmail());
-        simpleMailMessage.setText("/check-token?token="+createdAccount.getEmailCheckToken()+"&email="+createdAccount.getEmail());
-        javaMailSender.send(simpleMailMessage);
-
+        accountService.createNewAccount(signUpForm);
         return "redirect:/";
     }
+
+
+
+
 }

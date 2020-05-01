@@ -6,9 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -23,6 +28,9 @@ public class AccountControllerTest {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @MockBean
+    private JavaMailSender javaMailSender;
 
     @DisplayName("회원 가입 화면 노출 여부 테스트")
     @Test
@@ -59,7 +67,7 @@ public class AccountControllerTest {
                     .andExpect(view().name("redirect:/"));
 
         assertTrue(accountRepository.existsByEmail("isemail@gmail.com"));
-
+        then(javaMailSender).should().send(any(SimpleMailMessage.class)); // 메일을 무조건 보내는데 해당되는게 simplemailmessage인지
     }
 
 }
