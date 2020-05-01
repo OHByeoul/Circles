@@ -67,10 +67,10 @@ public class AccountControllerTest {
                     .andExpect(status().is3xxRedirection())
                     .andExpect(view().name("redirect:/"));
 
-        Account account = accountRepository.findByNickname("nickname");
+        Account account = accountRepository.findByEmail("isemail@gmail.com");
         assertNotNull(account);
         assertNotEquals(account.getPassword(),"123456");
-        //assertTrue(accountRepository.existsByEmail("isemail@gmail.com"));
+        assertTrue(accountRepository.existsByEmail("isemail@gmail.com")); // assertNotNull(account); 추가해서 빼도될듯
         then(javaMailSender).should().send(any(SimpleMailMessage.class)); // 메일을 무조건 보내는데 해당되는게 simplemailmessage인지
     }
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 
 @Controller
 @RequiredArgsConstructor
@@ -49,7 +50,26 @@ public class AccountController {
         return "redirect:/";
     }
 
+    @GetMapping("/check-email-token")
+    public String checkEmailToken(String token, String email, Model model){
+        Account account = accountService.findByEmail(email);
+        String view = "account/checkEmail";
 
+        if(account == null){
+            model.addAttribute("errorMsg","이메일이 존재하지 않습니다");
+            return view;
+        }
+
+        if(!account.getEmailCheckToken().equals(token)){
+            model.addAttribute("errorMsg","잘못된 토큰입니다");
+            return view;
+        }
+        account.setEmailVerified(true);
+        account.setJoinedAt(LocalDateTime.now());
+        model.addAttribute("createdUserNumber", accountService.getThisUserNumber());
+        model.addAttribute("createdUserNickname",account.getNickname());
+        return view;
+    }
 
 
 }
