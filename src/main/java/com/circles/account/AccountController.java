@@ -46,7 +46,8 @@ public class AccountController {
             return "account/sign-up";
         }
 
-        accountService.createNewAccount(signUpForm);
+        Account account = accountService.createNewAccount(signUpForm);
+        accountService.login(account);
         return "redirect:/";
     }
 
@@ -60,7 +61,7 @@ public class AccountController {
             return view;
         }
 
-        if(isIncorrectToken(account.getEmailCheckToken(),token)){
+        if(!account.isValidToken(token)){
             model.addAttribute("errorMsg","잘못된 토큰입니다");
             return view;
         }
