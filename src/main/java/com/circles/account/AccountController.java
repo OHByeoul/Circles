@@ -60,16 +60,21 @@ public class AccountController {
             return view;
         }
 
-        if(!account.getEmailCheckToken().equals(token)){
+        if(isIncorrectToken(account.getEmailCheckToken(),token)){
             model.addAttribute("errorMsg","잘못된 토큰입니다");
             return view;
         }
-        account.setEmailVerified(true);
-        account.setJoinedAt(LocalDateTime.now());
+
+        account.initValueSetting();
         model.addAttribute("createdUserNumber", accountService.getThisUserNumber());
         model.addAttribute("createdUserNickname",account.getNickname());
         return view;
     }
+
+    private boolean isIncorrectToken(String myToken, String otherToken){
+        return !myToken.equals(otherToken);
+    }
+
 
 
 }
