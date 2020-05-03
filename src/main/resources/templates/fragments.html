@@ -6,6 +6,10 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <title>Title</title>
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css"/>
+    <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
     <style>
         .container {
             max-width: 100%
@@ -68,10 +72,11 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
         </li>
         <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
             <div class="btn-group">
-                <button type="button" class="btn btn-danger">내 정보</button>
-                <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<!--                <button type="button" class="btn btn-danger">내 정보</button>-->
+                <a class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <svg data-jdenticon-value="user127" th:data-jdenticon-value="${#authentication.name}" width="30" height="30"></svg>
                     <span class="sr-only">내 정보</span>
-                </button>
+                </a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="#" th:href="@{/profile/}">내 정보</a>
                     <a class="dropdown-item" href="#">서클</a>
