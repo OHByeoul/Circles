@@ -67,3 +67,7 @@ buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
 .flattened-pom.xml
+
+### npm ###
+src/main/resources/static/node_modules
+src/main/resources/static/node
