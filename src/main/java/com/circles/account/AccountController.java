@@ -28,10 +28,6 @@ public class AccountController {
         webDataBinder.addValidators(signUpFormValidator);
     }
 
-    @GetMapping("/")
-    public String index(){
-        return "index";
-    }
 
     @GetMapping("/sign-up")
     public String signUpForm(Model model){

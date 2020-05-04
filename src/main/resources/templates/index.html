@@ -2,19 +2,20 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments.html :: head"></head>
 <body class="bg-warning">
-
-<div th:replace="fragments.html :: main-nav"></div>
-
-<div class="container">
-    <div class="py-5 text-center">
-        <h2>서클 메인</h2>
+    <div th:replace="fragments.html :: main-nav"></div>
+    <div class="alert alert-warning" role="alert" th:if="${account != null && !account.emailVerified}">
+        서클 가입을 완료하려면 이메일 인증을 해야합니다. <a th:href="@{/check-email}" class="alert-link">이메일 인증 바로가기</a>
     </div>
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>서클 메인</h2>
+        </div>
 
-            </div>
-        </form>
+                </div>
+            </form>
+        </div>
+
     </div>
-
-</div>
-<div th:replace="fragments.html :: footer"></div>
+    <div th:replace="fragments.html :: footer"></div>
 </body>
 </html>
