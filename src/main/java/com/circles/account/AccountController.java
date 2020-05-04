@@ -8,10 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -66,6 +63,20 @@ public class AccountController {
         model.addAttribute("createdUserNumber", accountService.getThisUserNumber());
         model.addAttribute("createdUserNickname",account.getNickname());
         return view;
+    }
+
+    @GetMapping("/check-email")
+    public String checkEmail(@RequestParam String email, Model model){
+        model.addAttribute("email",email);
+        return "account/checkEmail-confirm";
+    }
+
+    @GetMapping("/resend-email-token")
+    public String resendEmailToken(String email,Model model){
+        Account account = accountService.findByEmail(email);
+        accountService.sendSignUpConfirmEmail(account);
+        model.addAttribute("emailSend", true);
+        return "/index";
     }
 
     private boolean isIncorrectToken(String myToken, String otherToken){

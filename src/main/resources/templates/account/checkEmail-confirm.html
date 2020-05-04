@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="fragments.html :: head"></div>
+
+<body class="bg-warning">
+    <div th:replace="fragments.html :: main-nav"></div>
+
+    <div class="text-center py-8" th:if="${errorMsg == null}">
+        <p class="lead">써클 가입 확인</p>
+        <h3>
+            회원가입시 입력한 이메일을 확인해주세요
+        </h3>
+        <a th:href="@{/resend-email-token(email=${email})}"><small>이메일 재전송하기</small></a>
+    </div>
+    <div th:replace="fragments.html :: footer"></div>
+</body>
+</html>

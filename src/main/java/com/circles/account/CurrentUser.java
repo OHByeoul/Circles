@@ -10,5 +10,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 @AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : account") //인증된 사용자가 아니면 null, 인증됬으면 account 반환
+//spel지원
 public @interface CurrentUser {
 }
