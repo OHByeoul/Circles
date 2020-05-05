@@ -10,7 +10,8 @@
         <h3>
             회원가입시 입력한 이메일을 확인해주세요
         </h3>
-        <a th:href="@{/resend-email-token(email=${email})}"><small>이메일 재전송하기</small></a>
+        <span th:text="${email}"></span>
+        <a th:href="@{/resend-email-token}"><small>이메일 재전송하기</small></a>
     </div>
     <div th:replace="fragments.html :: footer"></div>
 </body>

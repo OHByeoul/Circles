@@ -5,10 +5,9 @@
 <body class="bg-warning">
     <div th:replace="fragments.html :: main-nav"></div>
 
-    <div class="text-center py-8" th:if="${errorMsg}">
+    <div class="text-center py-8" th:if="${errorMsg != null}">
         <p class="lead">써클 가입 확인</p>
-        <div class="alert alert-danger" role="alert">
-            이메일 확인 정보가 다릅니다
+        <div class="alert alert-danger" role="alert" th:text="${errorMsg}">
         </div>
     </div>
 

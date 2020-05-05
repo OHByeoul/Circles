@@ -66,17 +66,20 @@ public class AccountController {
     }
 
     @GetMapping("/check-email")
-    public String checkEmail(@RequestParam String email, Model model){
-        model.addAttribute("email",email);
+    public String checkEmail(@CurrentUser Account account, Model model){
+        model.addAttribute("email",account.getEmail());
         return "account/checkEmail-confirm";
     }
 
     @GetMapping("/resend-email-token")
-    public String resendEmailToken(String email,Model model){
-        Account account = accountService.findByEmail(email);
+    public String resendEmailToken(@CurrentUser Account account, Model model){
+        if(!account.isResendConfirmEmail()){
+            model.addAttribute("errorMsg","인증 이메일은 2시간에 한번 전송가능합니다.");
+            return "account/checkEmail";
+        }
         accountService.sendSignUpConfirmEmail(account);
         model.addAttribute("emailSend", true);
-        return "/index";
+        return "redirect:/"; //해당 url로 요청계속갈까봐 redirect시킨다
     }
 
     private boolean isIncorrectToken(String myToken, String otherToken){

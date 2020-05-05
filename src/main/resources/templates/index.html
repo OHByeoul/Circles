@@ -4,7 +4,7 @@
 <body class="bg-warning">
     <div th:replace="fragments.html :: main-nav"></div>
     <div class="alert alert-warning" role="alert" th:if="${account != null && !account.emailVerified}">
-        서클 가입을 완료하려면 이메일 인증을 해야합니다. <a th:href="@{/check-email(email=${account.email})}" class="alert-link">이메일 인증 확인</a>
+        서클 가입을 완료하려면 이메일 인증을 해야합니다. <a th:href="@{/check-email}" class="alert-link">이메일 인증 확인</a>
     </div>
     <div class="alert alert-warning" role="alert" th:if="${emailSend == true}">
         이메일이 재전송되었습니다.
