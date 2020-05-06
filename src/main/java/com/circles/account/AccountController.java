@@ -78,7 +78,7 @@ public class AccountController {
             return "account/checkEmail";
         }
         accountService.sendSignUpConfirmEmail(account);
-        model.addAttribute("emailSend", true);
+       // model.addAttribute("emailSend", true);
         return "redirect:/"; //해당 url로 요청계속갈까봐 redirect시킨다
     }
 
