@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+<body class="bg-warning">
+    <div th:replace="fragments.html :: main-nav"></div>
+
+    <div class="container">
+        <div class="py-5 text-center">
+            <p class="lead">써클</p>
+            <h2>로그인</h2>
+        </div>
+        <div class="row justify-centent-center">
+            <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                <p>입력한 정보가 정확하지 않습니다.</p>
+            </div>
+            <a th:href="@{/findPassword}">비밀번호 찾기</a>
+        </div>
+
+        <form class="needs-validation col-sm-6" th:action="@{/login}" method="post" novalidate>
+            <div class="form-group">
+                <label for="username">이메일 or 닉네임</label>
+                <input type="text" id="username" name="username" class="form-control"
+                       placeholder="abc@email.com" aria-describedby="emailHelp" required>
+                <small id="emailHelp" class="form-text text-muted">
+                    님의 이메일 or 닉네임을 입력하세요
+                </small>
+                <small class="invalid-feedback">이메일을 입력하세요</small>
+            </div>
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" class="form-control"
+                     aria-describedby="passwordHelp" required>
+                <small id="passwordHelp" class="form-text text-muted">
+                    <a th:href="@{/emailLogin}">이메일 로그인</a>
+                </small>
+                <small class="invalid-feedback">비밀번호를 입력하세요</small>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-danger btn-block" type="submit"
+                        aria-describedby="submitHelp">로그인</button>
+                <small id="submitHelp" class="form-text text-muted">
+                    <a th:href="@{/signup}">계정 생성</a>
+                </small>
+            </div>
+        </form>
+
+
+
+    </div>
+    <div th:replace="fragments.html :: footer"></div>
+    <script th:replace="fragments.html :: form-validate"></script>
+</body>
+</html>
