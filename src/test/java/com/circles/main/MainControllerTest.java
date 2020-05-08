@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -71,6 +72,28 @@ class MainControllerTest {
                             .andExpect(redirectedUrl("/"))
                             .andExpect(authenticated().withUsername("byeoul"));
 
+    }
+
+    @DisplayName("로그인실패")
+    @Test
+    void 로그인실패테스트() throws Exception {
+        mockMvc.perform(post("/login")
+                        .param("username","fuckkk")
+                        .param("password","fuckkk")
+                        .with(csrf()))
+                            .andExpect(status().is3xxRedirection())
+                            .andExpect(redirectedUrl("/login?error"))
+                            .andExpect(unauthenticated());
+    }
+
+    @DisplayName("로그아웃")
+    @Test
+    void 로그아웃테스트() throws Exception {
+        mockMvc.perform(post("/logout")
+                        .with(csrf()))
+                        .andExpect(status().is3xxRedirection())
+                        .andExpect(redirectedUrl("/"))
+                        .andExpect(unauthenticated());
     }
 
 }
