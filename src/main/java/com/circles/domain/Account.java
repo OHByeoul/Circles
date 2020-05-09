@@ -32,7 +32,7 @@ public class Account {
 
     private LocalDateTime joinedAt;
 
-    private String bio;
+    private String introduction;
 
     private String url;
 

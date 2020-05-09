@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body class="bg-warning">
+<div th:replace="fragments.html :: main-nav"></div>
+
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-2">
+            <svg th:if="${#strings.isEmpty(account.profileImage)}" th:data-jdenticon-value="${account.nickname}" with="150" height="150"></svg>
+            <img th:if="${!#strings.isEmpty(account.profileImage)}" th:src="${account.profileImage}" with="150" height="150"/>
+        </div>
+        <div class="col-7">
+            <h1 class="display-5" th:text="${account.nickname}">abcd</h1>
+            <p class="lead" th:if="${!#strings.isEmpty(account.introduction)}" th:text="${account.introduction}">introduction</p>
+            <p class="lead" th:if="${#strings.isEmpty(account.introduction) && isOwner}">
+                자기소개를 입력해주세요
+            </p>
+        </div>
+    </div>
+
+    <div class="row mt-5 justify-content-center">
+        <div class="col-2">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-intro-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-home" aria-selected="true">소개</a>
+                <a class="nav-link" id="v-pills-circle-tab" data-toggle="pill" href="#v-pills-circle" role="tab" aria-controls="false">써클</a>
+            </div>
+        </div>
+        <div class="col-7">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                    <p th:if="${!#strings.isEmpty(account.url)}">
+                        <span style="...">
+                            <i class="fa fa-link col-1"></i>
+                        </span>
+                        <span th:text="${account.url}" class="col-11"></span>
+                    </p>
+                    <p th:if="${!#strings.isEmpty(account.occupation)}">
+                        <span style="...">
+                            <i class="fa fa-briefcase col-1"></i>
+                        </span>
+                        <span th:text="${account.occupation}" class="col-9"></span>
+                    </p>
+                    <p th:if="${!#strings.isEmpty(account.location)}">
+                        <span style="...">
+                            <i class="fa fa-location-arrow col-1"></i>
+                        </span>
+                        <span th:text="${account.location}" class="col-9"></span>
+                    </p>
+                    <p th:if="${isOwner}">
+                        <span style="font-size: 20px;">
+                            <i class="fa fa-envelope-o col-1"></i>
+                        </span>
+                        <span th:text="${account.email}" class="col-9"></span>
+                    </p>
+                    <p th:if="${account.emailVerified || isOwner}">
+                        <span style="...">
+                            <i class="fa fa-calendar col-1"></i>
+                        </span>
+                        <span th:if="${!account.emailVerified && isOwner}" class="col-9">
+                            <a th:href="@{'/checkemail?email='+${account.email}}">이메일 확인을 통해 가입을 완료하세여</a>
+                        </span>
+                        <span th:text="${#temporals.format(account.joinedAt, 'yyyy년 M월 가입')}" class="col-9"></span>
+                    </p>
+                    <div th:if="${isOwner}">
+                        <a class="btn btn-outline-danger" th:href="@{/settings/profile}">프로필 수정</a>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-circle" role="tabpanel" aria-labelledby="v-pills-circle-tab">
+                    circle
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
