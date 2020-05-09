@@ -82,10 +82,24 @@ public class AccountController {
         return "redirect:/"; //해당 url로 요청계속갈까봐 redirect시킨다
     }
 
-    private boolean isIncorrectToken(String myToken, String otherToken){
-        return !myToken.equals(otherToken);
+//    private boolean isIncorrectToken(String myToken, String otherToken){
+//        return !myToken.equals(otherToken);
+//    }
+
+    @GetMapping("/profile/{nickname}")
+    public String getProfileView(@PathVariable String nickname, Model model, @CurrentUser Account account){
+        Account myAccount = accountService.findByNickname(nickname);
+        if(nickname == null){
+            throw new IllegalArgumentException(nickname+"에 해당되는 사용자가 없음");
+        }
+        model.addAttribute(myAccount);
+        model.addAttribute("isOwner",isOwner(nickname, account));
+        return "account/profile";
     }
 
+    private boolean isOwner(String nickname, Account account) {
+        return nickname.equals(account.getNickname());
+    }
 
 
 }
