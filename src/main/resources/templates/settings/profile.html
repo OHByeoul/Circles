@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body class="bg-warning">
+    <div th:replace="fragments.html :: main-nav"></div>
+
+    <div class="container">
+        <div class="row mt-5 justify-content-center">
+            <div class="col-2">
+                <div th:replace="fragments.html :: menu-setting (currentMenu='profile')"></div>
+
+            </div>
+            <div class="col-7">
+                <div class="row">
+                    <h2 class="col-sm-12" th:text="${account.nickname}">닉네임</h2>
+
+                </div>
+                <div class="row mt-5">
+                    <form class="col-sm-6" th:action="@{/settings/profile}" th:object="${profile}" method="post" novalidate>
+                        <div class="form-group">
+                            <label for="introduction">소개</label>
+                            <input type="text" id="introduction" th:field="*{introduction}" class="form-control"
+                                   placeholder="짧은 자기소개나 하고싶은 말??" aria-describedby="introHelp" required>
+                            <small id="introHelp" class="form-text text-muted">
+                                50자이내로 입력
+                            </small>
+                            <small class="form-text text-danger" th:if="${#fields.hasErrors('introduction')}" th:errors="*{introduction}">소개를 짧게 입력해주세요</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="url">링크</label>
+                            <input type="text" id="url" th:field="*{url}" class="form-control" placeholder="http://mysite.com" aria-describedby="urlHelp" required>
+                            <small id="urlHelp" class="form-text text-muted">
+                                사이트 넣고 싶은거 아무거나
+                            </small>
+                            <small class="form-text text-danger" th:if="${#fields.hasErrors('url')}" th:errors="*{url}">
+                                url 입력 양식이 다름
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <label for="company">직업</label>
+                            <input type="text" id="company" th:field="*{occupation}" class="form-control" placeholder="직업" aria-describedby="occupationHelp" required>
+                            <small id="occupationHelp" class="form-text text-muted">
+                                직업이 필요할까? 다른거 넣을까
+                            </small>
+                            <small class="form-text text-danger" th:if="${#fields.hasErrors('url')}" th:errors="*{url}">
+                                직업 입력 양식이 다름
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <label for="location">활동 지역</label>
+                            <input type="text" id="location" th:field="*{location}" class="form-control" placeholder="incheon" aria-describedby="locationHelp" required>
+                            <small id="locationHelp" class="form-text text-muted">
+                                써클 활동지역
+                            </small>
+                            <small class="form-text text-danger" th:if="${#fields.hasErrors('location')}" th:errors="*{location}">
+                                활동지역 입력 양식이 올바르지 않음
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-danger btn-block" aria-describedby="submitHelp">수정</button>
+                        </div>
+
+                    </form>
+                </div>
+        </div>
+        </div>
+    </div>
+
+</body>
+</html>
