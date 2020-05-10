@@ -63,7 +63,7 @@ public class Account {
         this.emailCheckTokenGenerateTime = LocalDateTime.now();
     }
 
-    public void initValueSetting() {
+    public void initSignUpSetting() {
         this.setEmailVerified(true);
         this.setJoinedAt(LocalDateTime.now());
     }

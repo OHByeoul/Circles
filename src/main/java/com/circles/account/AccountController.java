@@ -60,7 +60,7 @@ public class AccountController {
             return view;
         }
 
-        account.initValueSetting();
+        accountService.completeSignUp(account);
         model.addAttribute("createdUserNumber", accountService.getThisUserNumber());
         model.addAttribute("createdUserNickname",account.getNickname());
         return view;

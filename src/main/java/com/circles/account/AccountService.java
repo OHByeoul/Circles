@@ -74,6 +74,7 @@ public class AccountService implements UserDetailsService {
         SecurityContextHolder.getContext().setAuthentication(token);
     }
 
+    @Transactional(readOnly = true) //데이터 변경없이 읽기만하는 것이니 readOnly옵션
     @Override
     public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
         Account account = accountRepository.findByEmail(emailOrNickname);
@@ -89,5 +90,10 @@ public class AccountService implements UserDetailsService {
 
     public Account findByNickname(String nickname) {
         return accountRepository.findByNickname(nickname);
+    }
+
+    public void completeSignUp(Account account) {
+        account.initSignUpSetting();
+        login(account);
     }
 }
