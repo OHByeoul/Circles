@@ -2,8 +2,10 @@ package com.circles.settings;
 
 import com.circles.domain.Account;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class Profile {
     private String introduction;
 
