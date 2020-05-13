@@ -34,7 +34,7 @@ class SettingsControllerTest {
     }
 
     @WithAccount("byeoul")
-    @DisplayName("프로필 수정 테스트")
+    @DisplayName("프로필 수정 테스트 - 성공")
     @Test
     void profileUpdate() throws Exception {
         mockMvc.perform(post("/settings/profile")
@@ -46,6 +46,22 @@ class SettingsControllerTest {
 
         Account account = accountService.findByNickname("byeoul");
         assertEquals("자소자소", account.getIntroduction());
+    }
 
+    @WithAccount("byeoul")
+    @DisplayName("프로필 수정 테스트 - 실패")
+    @Test
+    void 프로필수정테스트실패() throws Exception{
+        mockMvc.perform(post("/settings/profile")
+                        .param("introduction","wkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthw")
+                        .with(csrf()))
+                            .andExpect(status().isOk())
+                            .andExpect(view().name("settings/profile"))
+                            .andExpect(model().attributeExists("account"))
+                            .andExpect(model().attributeExists("profile"))
+                            .andExpect(model().hasErrors());
+
+        Account account = accountService.findByNickname("byeoul");
+        assertNotEquals("wkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthw", account.getIntroduction());
     }
 }
