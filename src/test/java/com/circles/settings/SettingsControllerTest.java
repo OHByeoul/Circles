@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -63,5 +64,18 @@ class SettingsControllerTest {
 
         Account account = accountService.findByNickname("byeoul");
         assertNotEquals("wkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthwwkthw", account.getIntroduction());
+    }
+
+    @DisplayName("프로필 view리턴")
+    @WithAccount("byeoul")
+    @Test
+    void 프로필뷰리턴() throws Exception {
+        mockMvc.perform(get("/settings/profile")
+                    .with(csrf())) // form에 담은값 post로 올리는게 아니라 필요 없을듯
+                    .andExpect(status().isOk())
+                    .andExpect(model().attributeExists("account"))
+                    .andExpect(model().attributeExists("profile"))
+                    .andExpect(view().name("settings/profile"));
+
     }
 }
