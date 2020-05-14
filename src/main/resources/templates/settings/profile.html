@@ -72,6 +72,32 @@
                         </div>
 
                     </form>
+                    <div class="col-sm-6">
+                        <div class="card text-center">
+                            <div class="card-header">
+                                프로필 이미지
+                            </div>
+                            <div id="current-profile-image" class="mt-5">
+                                <svg th:if="${#strings.isEmpty(profile.profileImage)}" class="rounded" th:data-jdenticon-value="${account.nickname}"
+                                     with="150" height="150"></svg>
+                                <img th:if="${!#strings.isEmpty(profile.profileImage)}" class="rounded" th:src="${profile.profileImage}" width="150" height="150"
+                                     th:alt="${account.nickname}" />
+                            </div>
+                            <div id="new-profile-image" class="mt-5"></div>
+                            <div id="card-body">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="profile-image-file">
+                                    <label class="custom-file-label" for="profile-image-file">프로필 이미지 변경</label>
+                                </div>
+                                <div id="new-profile-image-control" class="mt-5">
+                                    <button class="btn btn-outline-primary btn-block" id="cut-button">자르기</button>
+                                    <button class="btn btn-outline-success btn-block" id="comfirm-button">확인</button>
+                                    <button class="btn btn-outline-warning btn-block" id="reset-button">취소</button>
+                                </div>
+                                <div id="cropped-new-profile-image" class="mt-5"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
         </div>
         </div>
