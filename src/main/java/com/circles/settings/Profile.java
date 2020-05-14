@@ -20,10 +20,13 @@ public class Profile {
     @Length(max=70)
     private String location; //사는 지역
 
+    private String profileImage;
+
     public Profile(Account account) {
         this.introduction = account.getIntroduction();
         this.url = account.getUrl();
         this.occupation = account.getOccupation();
         this.location = account.getLocation();
+        this.profileImage = account.getProfileImage();
     }
 }
