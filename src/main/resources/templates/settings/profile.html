@@ -91,8 +91,8 @@
                                 </div>
                                 <div id="new-profile-image-control" class="mt-5">
                                     <button class="btn btn-outline-primary btn-block" id="cut-button">자르기</button>
-                                    <button class="btn btn-outline-success btn-block" id="comfirm-button">확인</button>
-                                    <button class="btn btn-outline-warning btn-block" id="reset-button">취소</button>
+                                    <button class="btn btn-outline-success btn-block" id="confirm-button">확인</button>
+                                    <button class="btn btn-outline-warning btn-block" id="cancel-button">취소</button>
                                 </div>
                                 <div id="cropped-new-profile-image" class="mt-5"></div>
                             </div>
@@ -102,6 +102,48 @@
         </div>
         </div>
     </div>
+    <link href="/node_modules/cropper/dist/cropper.min.css" rel="stylesheet">
+    <script src="/node_modules/cropper/dist/jquery-cropper.min.js"></script>
+    <script src="/node_modules/cropper/dist/cropper.min.js"></script>
+    <script>
+    $(function(){
+        cropper = '';
+        let $cutBtn = $('#cut-button');
+        let $confirmBtn = $('#confirm-button');
+        let $resetBtn = $('#reset-button');
+        let $newProfileImage = $('#new-profile-image');
+        let $currentProfileImage = $('#current-profile-image');
+        let $resultImage = $('#cropped-new-profile-image');
+        let $profileImage = $('#profileImage');
+
+        $confirmBtn.hide()
+        $resetBtn.hide()
+        $cutBtn.hide()
+        $$newProfileImage.hide()
+
+        $("#profile-image-file").on('change', function(e){
+            if(e.target.files.length == 1){
+                const reader = new FileReader();
+                reader.onload = e => {
+                    if(e.target.result){
+                        let image = document.createElement("img");
+                        image.id = 'new-profile';
+                        image.src = e.target.result;
+                        image.width = 240;
+
+                        $newProfileImage.html(image);
+                        $newProfileImage.show();
+                        $currentProfileImage.hide();
+
+
+                    }
+                }
+            }
+
+        })
+    })
+    </script>
+
 
 </body>
 </html>
