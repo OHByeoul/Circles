@@ -74,7 +74,8 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
             <div class="btn-group">
 <!--                <button type="button" class="btn btn-danger">내 정보</button>-->
                 <a class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <svg data-jdenticon-value="user127" th:data-jdenticon-value="${#authentication.name}" width="30" height="30"></svg>
+                    <svg th:if="${#strings.isEmpty(account?.profileImage)}" th:data-jdenticon-value="${#authentication.name}" width="30" height="30"></svg>
+                    <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}" width="30" height="30"></img>
                     <span class="sr-only">내 정보</span>
                 </a>
                 <div class="dropdown-menu">
