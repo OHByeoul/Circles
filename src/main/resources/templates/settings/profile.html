@@ -110,16 +110,16 @@
         cropper = '';
         let $cutBtn = $('#cut-button');
         let $confirmBtn = $('#confirm-button');
-        let $resetBtn = $('#reset-button');
+        let $cancelBtn = $('#cancel-button');
         let $newProfileImage = $('#new-profile-image');
         let $currentProfileImage = $('#current-profile-image');
         let $resultImage = $('#cropped-new-profile-image');
         let $profileImage = $('#profileImage');
 
         $confirmBtn.hide()
-        $resetBtn.hide()
+        $cancelBtn.hide()
         $cutBtn.hide()
-        $$newProfileImage.hide()
+        $newProfileImage.hide()
 
         $("#profile-image-file").on('change', function(e){
             if(e.target.files.length == 1){
@@ -135,12 +135,47 @@
                         $newProfileImage.show();
                         $currentProfileImage.hide();
 
+                        let $newImage = $(image);
+                        $newImage.cropper({aspectRatio: 1});
+                        cropper = $newImage.data('cropper');
 
+                        $confirmBtn.hide();
+                        $cutBtn.show();
+                        $cancelBtn.show();
                     }
                 }
+                reader.readAsDataURL(e.target.files[0]);
             }
 
         })
+
+        $cancelBtn.on('click', function(){
+            $currentProfileImage.show();
+            $newProfileImage.hide();
+            $resultImage.hide();
+            $cancelBtn.hide();
+            $cutBtn.hide();
+            $confirmBtn.hide();
+            $profileImage.val('');
+        });
+
+        $cutBtn.on('click', function(){
+            let dataUrl = cropper.getCroppedCanvas().toDataURL();
+            let newImage = document.createElement('img');
+            newImage.id = "cropped-new-profile-image";
+            newImage.src = dataUrl;
+            newImage.width = 150;
+            $resultImage.html(newImage);
+            $resultImage.show();
+            $confirmBtn.show();
+
+            $confirmBtn.on('click',function(){
+                $newProfileImage.html(newImage);
+                $cutBtn.hide();
+                $confirmBtn.hide();
+                $profileImage.val(dataUrl);
+            });
+        });
     })
     </script>
 
