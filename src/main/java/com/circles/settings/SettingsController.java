@@ -37,4 +37,24 @@ public class SettingsController {
         attributes.addFlashAttribute("message","수정이 됫음");
         return "redirect:/settings/profile";
     }
+
+    @GetMapping("/settings/password")
+    public String passwordUpdate(@CurrentUser Account account, Model model){
+        model.addAttribute(account);
+        model.addAttribute("password", new Password());
+        return "settings/password";
+    }
+
+    @PostMapping("/settings/password")
+    public String passwordUpdate(@CurrentUser Account account,@Valid @ModelAttribute Password password,
+                                 Errors errors, Model model, RedirectAttributes attributes){
+        if(errors.hasErrors()){
+            model.addAttribute(account);
+            return "settings/password";
+        }
+
+        accountService.updatePassword(account,password);
+        attributes.addFlashAttribute("message","비밀번호가 변경되었음");
+        return "redirect:/settings/password";
+    }
 }

@@ -1,6 +1,7 @@
 package com.circles.account;
 
 import com.circles.domain.Account;
+import com.circles.settings.Password;
 import com.circles.settings.Profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -104,6 +105,11 @@ public class AccountService implements UserDetailsService {
         account.setOccupation(profile.getOccupation());
         account.setUrl(profile.getUrl());
         account.setProfileImage(profile.getProfileImage());
+        accountRepository.save(account);
+    }
+
+    public void updatePassword(Account account, Password password) {
+        account.setPassword(passwordEncoder.encode(password.getPassword()));
         accountRepository.save(account);
     }
 }
