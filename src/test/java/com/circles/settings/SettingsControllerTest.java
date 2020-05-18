@@ -78,4 +78,18 @@ class SettingsControllerTest {
                     .andExpect(view().name("settings/profile"));
 
     }
+
+
+    @DisplayName("비밀번호 수정 화면")
+    @WithAccount("byeoul")
+    @Test
+    void 비밀번호수정화면리턴() throws Exception {
+        mockMvc.perform(get("/settings/password")
+                    .with(csrf()))
+                        .andExpect(status().isOk())
+                        .andExpect(model().attributeExists("password"))
+                        .andExpect(model().attributeExists("account"))
+                        .andExpect(view().name("settings/password"));
+
+    }
 }
