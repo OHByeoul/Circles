@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,6 +29,9 @@ class SettingsControllerTest {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @AfterEach
     void deleteProfile(){
@@ -90,6 +94,22 @@ class SettingsControllerTest {
                         .andExpect(model().attributeExists("password"))
                         .andExpect(model().attributeExists("account"))
                         .andExpect(view().name("settings/password"));
+    }
+
+    @DisplayName("비밀번호 수정 성공")
+    @WithAccount("byeoul")
+    @Test
+    void 비밀번호수정성공() throws Exception {
+        mockMvc.perform(post("/settings/password")
+                        .param("password","123456")
+                        .param("passwordConfirm","123456")
+                        .with(csrf()))
+                            .andExpect(status().is3xxRedirection())
+                            .andExpect(flash().attributeExists("message"))
+                            .andExpect(redirectedUrl("/settings/password"));
+
+        Account account = accountRepository.findByNickname("byeoul");
+        assertTrue(passwordEncoder.matches("123456",account.getPassword()));
 
     }
 }
