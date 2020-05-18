@@ -110,6 +110,19 @@ class SettingsControllerTest {
 
         Account account = accountRepository.findByNickname("byeoul");
         assertTrue(passwordEncoder.matches("123456",account.getPassword()));
+    }
 
+    @DisplayName("비밀번호 수정 실패")
+    @WithAccount("byeoul")
+    @Test
+    void 비밀번호수정실패() throws Exception {
+        mockMvc.perform(post("/settings/password")
+                        .param("password","123456")
+                        .param("passwordConfirm","1234567")
+                        .with(csrf()))
+                            .andExpect(status().isOk())
+                            .andExpect(model().attributeExists("account"))
+                            .andExpect(model().hasErrors())
+                            .andExpect(view().name("settings/password"));
     }
 }
