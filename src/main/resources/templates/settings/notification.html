@@ -7,7 +7,7 @@
 <div class="container">
     <div class="row mt-5 justify-content-center">
         <div class="col-2">
-            <div th:replace="fragments.html :: menu-setting (currentMenu='notifications')"></div>
+            <div th:replace="fragments.html :: menu-setting (currentMenu='notification')"></div>
 
         </div>
         <div class="col-7">
@@ -23,23 +23,46 @@
             </div>
             <div class="row">
                 <form class="col-sm-7" th:action="@{/settings/notification}" th:object="${notification}" id="form" method="post">
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input"  id="circleCreatedByWeb" th:field="*{circleCreatedByWeb}">
-                        <label class="custom-control-label" for="circleCreatedByWeb">웹</label>
-                        <input type="checkbox" class="custom-control-input" disabled id="circleCreatedByEmail" th:field="*{circleCreatedByEmail}">
-                        <label class="custom-control-label" for="circleCreatedByEmail">이메일</label>
+                    <div class="alert alert-light" role="alert">
+                        써클이 만들어졌을 때 알림을 받는 플랫폼 선택
                     </div>
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input"  id="circleEnrollmentResultByWeb" th:field="*{circleEnrollmentResultByWeb}">
-                        <label class="custom-control-label" for="circleEnrollmentResultByWeb">웹</label>
-                        <input type="checkbox" class="custom-control-input" disabled id="circleEnrollmentResultByEmail" th:field="*{circleEnrollmentResultByEmail}">
-                        <label class="custom-control-label" for="circleEnrollmentResultByEmail">이메일</label>
+                    <div class="form-group">
+                        <div class="custom-control custom-switch custom-control-inline">
+                            <input type="checkbox" class="custom-control-input"  id="circleCreatedByWeb" th:field="*{circleCreatedByWeb}">
+                            <label class="custom-control-label" for="circleCreatedByWeb">웹</label>
+                        </div>
+                        <div class="custom-control custom-switch custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" id="circleCreatedByEmail" th:field="*{circleCreatedByEmail}">
+                            <label class="custom-control-label" for="circleCreatedByEmail">이메일</label>
+                        </div>
                     </div>
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input"  id="circleUpdatedResultByWeb" th:field="*{circleUpdatedResultByWeb}">
-                        <label class="custom-control-label" for="circleUpdatedResultByWeb">웹</label>
-                        <input type="checkbox" class="custom-control-input" disabled id="circleUpdatedResultByEmail" th:field="*{circleUpdatedResultByEmail}">
-                        <label class="custom-control-label" for="circleUpdatedResultByEmail">이메일</label>
+
+                    <div class="alert alert-light" role="alert">
+                        써클의 참가신청 알림을 받을 플랫폼 선택
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-switch custom-control-inline">
+                            <input type="checkbox" class="custom-control-input"  id="circleEnrollmentResultByWeb" th:field="*{circleEnrollmentResultByWeb}">
+                            <label class="custom-control-label" for="circleEnrollmentResultByWeb">웹</label>
+
+                        </div>
+                        <div class="custom-control custom-switch custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" id="circleEnrollmentResultByEmail" th:field="*{circleEnrollmentResultByEmail}">
+                            <label class="custom-control-label" for="circleEnrollmentResultByEmail">이메일</label>
+                        </div>
+                    </div>
+                    <div class="alert alert-light" role="alert">
+                        참여중인 써클의 알림을 받을 플랫폼 선택
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-switch custom-control-inline">
+                            <input type="checkbox" class="custom-control-input"  id="circleUpdatedResultByWeb" th:field="*{circleUpdatedResultByWeb}">
+                            <label class="custom-control-label" for="circleUpdatedResultByWeb">웹</label>
+                        </div>
+                        <div class="custom-control custom-switch custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" id="circleUpdatedResultByEmail" th:field="*{circleUpdatedResultByEmail}">
+                            <label class="custom-control-label" for="circleUpdatedResultByEmail">이메일</label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-danger" id="notificationChangeBtn">저장</button>

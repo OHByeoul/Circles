@@ -1,6 +1,7 @@
 package com.circles.account;
 
 import com.circles.domain.Account;
+import com.circles.settings.Notification;
 import com.circles.settings.Password;
 import com.circles.settings.Profile;
 import lombok.RequiredArgsConstructor;
@@ -110,6 +111,16 @@ public class AccountService implements UserDetailsService {
 
     public void updatePassword(Account account, Password password) {
         account.setPassword(passwordEncoder.encode(password.getPassword()));
+        accountRepository.save(account);
+    }
+
+    public void updateNotification(Account account, Notification notification) {
+        account.setCircleCreatedByEmail(notification.isCircleCreatedByEmail());
+        account.setCircleCreatedByWeb(notification.isCircleCreatedByWeb());
+        account.setCircleEnrollmentResultByEmail(notification.isCircleEnrollmentResultByEmail());
+        account.setCircleEnrollmentResultByWeb(notification.isCircleEnrollmentResultByWeb());
+        account.setCircleUpdatedResultByEmail(notification.isCircleUpdatedResultByEmail());
+        account.setCircleUpdatedResultByWeb(notification.isCircleUpdatedResultByWeb());
         accountRepository.save(account);
     }
 }

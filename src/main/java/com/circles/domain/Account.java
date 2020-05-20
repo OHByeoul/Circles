@@ -44,17 +44,17 @@ public class Account {
     private String profileImage;
 
     //notification
-    private boolean circleCreatedByEmail;
+    private boolean circleCreatedByEmail = false;
 
-    private boolean circleCreatedByWeb;
+    private boolean circleCreatedByWeb = true;
 
-    private boolean circleEnrollmentResultByEmail;
+    private boolean circleEnrollmentResultByEmail = false;
 
-    private boolean circleEnrollmentResultByWeb;
+    private boolean circleEnrollmentResultByWeb = true;
 
-    private boolean circleUpdatedResultByEmail;
+    private boolean circleUpdatedResultByEmail = false;
 
-    private boolean circleUpdatedResultByWeb;
+    private boolean circleUpdatedResultByWeb = true;
 
     private LocalDateTime emailCheckTokenGenerateTime;
 
