@@ -4,6 +4,7 @@ import com.circles.account.AccountService;
 import com.circles.account.CurrentUser;
 import com.circles.domain.Account;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -19,17 +20,19 @@ import javax.validation.Valid;
 @Controller
 @RequiredArgsConstructor
 public class SettingsController {
+
+    private final AccountService accountService;
+    private final ModelMapper modelMapper;
+
     @InitBinder("password")
     public void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(new PasswordValidator());
     }
 
-    private final AccountService accountService;
-
     @GetMapping("/settings/profile")
     public String profileUpdate(@CurrentUser Account account, Model model){
         model.addAttribute(account);
-        model.addAttribute(new Profile(account));
+        model.addAttribute(modelMapper.map(account,Profile.class));
         return "settings/profile";
     }
 
@@ -68,7 +71,7 @@ public class SettingsController {
     @GetMapping("/settings/notification")
     public String updateNotification(@CurrentUser Account account, Model model){
         model.addAttribute(account);
-        model.addAttribute(new Notification(account));
+        model.addAttribute(modelMapper.map(account,Notification.class));
         return "settings/notification";
     }
 

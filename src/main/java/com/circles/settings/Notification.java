@@ -19,12 +19,12 @@ public class Notification {
 
     private boolean circleUpdatedResultByWeb;
 
-    public Notification(Account account) {
-        this.circleCreatedByEmail = account.isCircleCreatedByEmail();
-        this.circleCreatedByWeb = account.isCircleCreatedByWeb();
-        this.circleEnrollmentResultByEmail = account.isCircleEnrollmentResultByEmail();
-        this.circleEnrollmentResultByWeb = account.isCircleEnrollmentResultByWeb();
-        this.circleUpdatedResultByEmail = account.isCircleUpdatedResultByEmail();
-        this.circleUpdatedResultByWeb = account.isCircleUpdatedResultByWeb();
-    }
+//    public Notification(Account account) {
+//        this.circleCreatedByEmail = account.isCircleCreatedByEmail();
+//        this.circleCreatedByWeb = account.isCircleCreatedByWeb();
+//        this.circleEnrollmentResultByEmail = account.isCircleEnrollmentResultByEmail();
+//        this.circleEnrollmentResultByWeb = account.isCircleEnrollmentResultByWeb();
+//        this.circleUpdatedResultByEmail = account.isCircleUpdatedResultByEmail();
+//        this.circleUpdatedResultByWeb = account.isCircleUpdatedResultByWeb();
+//    }
 }

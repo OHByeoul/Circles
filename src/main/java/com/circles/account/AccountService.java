@@ -5,6 +5,7 @@ import com.circles.settings.Notification;
 import com.circles.settings.Password;
 import com.circles.settings.Profile;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,6 +28,7 @@ public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     @Transactional
     public Account createNewAccount(SignUpForm signUpForm) {
@@ -101,11 +103,12 @@ public class AccountService implements UserDetailsService {
     }
 
     public void updateProfile(Account account, Profile profile) {
-        account.setIntroduction(profile.getIntroduction());
-        account.setLocation(profile.getLocation());
-        account.setOccupation(profile.getOccupation());
-        account.setUrl(profile.getUrl());
-        account.setProfileImage(profile.getProfileImage());
+//        account.setIntroduction(profile.getIntroduction());
+//        account.setLocation(profile.getLocation());
+//        account.setOccupation(profile.getOccupation());
+//        account.setUrl(profile.getUrl());
+//        account.setProfileImage(profile.getProfileImage());
+        modelMapper.map(profile,account);
         accountRepository.save(account);
     }
 
@@ -115,12 +118,13 @@ public class AccountService implements UserDetailsService {
     }
 
     public void updateNotification(Account account, Notification notification) {
-        account.setCircleCreatedByEmail(notification.isCircleCreatedByEmail());
-        account.setCircleCreatedByWeb(notification.isCircleCreatedByWeb());
-        account.setCircleEnrollmentResultByEmail(notification.isCircleEnrollmentResultByEmail());
-        account.setCircleEnrollmentResultByWeb(notification.isCircleEnrollmentResultByWeb());
-        account.setCircleUpdatedResultByEmail(notification.isCircleUpdatedResultByEmail());
-        account.setCircleUpdatedResultByWeb(notification.isCircleUpdatedResultByWeb());
+        modelMapper.map(notification,account);
+//        account.setCircleCreatedByEmail(notification.isCircleCreatedByEmail());
+//        account.setCircleCreatedByWeb(notification.isCircleCreatedByWeb());
+//        account.setCircleEnrollmentResultByEmail(notification.isCircleEnrollmentResultByEmail());
+//        account.setCircleEnrollmentResultByWeb(notification.isCircleEnrollmentResultByWeb());
+//        account.setCircleUpdatedResultByEmail(notification.isCircleUpdatedResultByEmail());
+//        account.setCircleUpdatedResultByWeb(notification.isCircleUpdatedResultByWeb());
         accountRepository.save(account);
     }
 }
