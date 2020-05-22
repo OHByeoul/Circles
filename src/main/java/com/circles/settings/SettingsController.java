@@ -87,4 +87,10 @@ public class SettingsController {
         return "redirect:/settings/notification";
     }
 
+    @GetMapping("/settings/account")
+    public String updateAccount(@CurrentUser Account account, Model model){
+        model.addAttribute(account);
+        model.addAttribute(new AccountForm());
+        return "settings/account";
+    }
 }

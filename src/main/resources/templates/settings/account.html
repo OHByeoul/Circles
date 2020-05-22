@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body class="bg-warning">
+<div th:replace="fragments.html :: main-nav"></div>
+
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-2">
+            <div th:replace="fragments.html :: menu-setting (currentMenu='password')"></div>
+
+        </div>
+        <div class="col-7">
+            <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-5" role="alert">
+                <span th:text="${message}">메세지</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                    <span aria-hidden="true"></span>
+                </button>
+
+            </div>
+            <div class="row-12">
+                <h3 class="col-sm-12">계정 변경</h3>
+            </div>
+            <div class="row">
+                <form class="col-sm-7" th:action="@{/settings/account}" th:object="${account}" id="form" method="post">
+                    <div class="form-group">
+                        <div class="alert alert-light" role="alert">
+                            변경할 닉 입력하세여
+                        </div>
+                        <input type="text" id="nickname" class="form-control" th:field="*{nickname}" placeholder="nickname" required min="5" max="15">
+
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">
+                            nickname error
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-danger" id="nicknameChangeBtn" onclick="return false;">닉넴 변경</button>
+
+                    </div>
+                </form>
+            </div>
+            <div class="row-12">
+                <h3 class="col-sm-12">계정 삭제</h3>
+            </div>
+            <div class="row">
+                <form class="col-sm-7" th:action="@{/settings/account}" th:object="${account}" id="form1" method="post">
+                    <div class="form-group">
+                        <div class="alert alert-light" role="alert">
+                            변경할 닉 입력하세여??
+                        </div>
+                        <input type="password" id="password" class="form-control" th:field="*{password}" placeholder="password" required min="6" max="20">
+
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+                            nickname error
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-danger" id="passwordChangeBtn" onclick="return false;">계정 삭제</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var main = {
+        init : function(){
+            var _this = this;
+            $('#passwordChangeBtn').on('click', function(){
+                _this.changePassword();
+            })
+        },
+
+        changePassword : function(){
+            let $pw = $('#password');
+            let $confirmPw = $('#password-confirm');
+
+            if($pw.val() != $confirmPw.val()){
+                alert('비밀번호가 다릅니다.')
+                return false;
+            }
+            $('#form').submit();
+        }
+    }
+
+    $(function(){
+        main.init();
+    })
+</script>
+</body>
+</html>
