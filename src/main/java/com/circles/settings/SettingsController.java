@@ -90,7 +90,17 @@ public class SettingsController {
     @GetMapping("/settings/account")
     public String updateAccount(@CurrentUser Account account, Model model){
         model.addAttribute(account);
-        model.addAttribute(new AccountForm());
+        model.addAttribute("accountForm",new AccountForm(account));
         return "settings/account";
+    }
+
+    @PostMapping("/settings/account")
+    public String updateAccount(@CurrentUser Account account,@Valid @ModelAttribute AccountForm accountForm,Errors errors, Model model){
+        if(errors.hasErrors()){
+            model.addAttribute(account);
+            return "settings/account";
+        }
+        accountService.updateAccount(account,accountForm);
+        return "redirect:/settings/account";
     }
 }

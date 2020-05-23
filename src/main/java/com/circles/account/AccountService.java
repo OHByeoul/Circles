@@ -1,6 +1,7 @@
 package com.circles.account;
 
 import com.circles.domain.Account;
+import com.circles.settings.AccountForm;
 import com.circles.settings.Notification;
 import com.circles.settings.Password;
 import com.circles.settings.Profile;
@@ -125,6 +126,11 @@ public class AccountService implements UserDetailsService {
 //        account.setCircleEnrollmentResultByWeb(notification.isCircleEnrollmentResultByWeb());
 //        account.setCircleUpdatedResultByEmail(notification.isCircleUpdatedResultByEmail());
 //        account.setCircleUpdatedResultByWeb(notification.isCircleUpdatedResultByWeb());
+        accountRepository.save(account);
+    }
+
+    public void updateAccount(Account account, AccountForm accountForm) {
+        account.setNickname(accountForm.getNickname());
         accountRepository.save(account);
     }
 }
