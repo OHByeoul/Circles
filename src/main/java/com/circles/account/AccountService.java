@@ -132,5 +132,6 @@ public class AccountService implements UserDetailsService {
     public void updateAccount(Account account, AccountForm accountForm) {
         account.setNickname(accountForm.getNickname());
         accountRepository.save(account);
+        login(account);
     }
 }
