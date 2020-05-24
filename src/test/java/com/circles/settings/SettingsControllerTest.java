@@ -125,4 +125,29 @@ class SettingsControllerTest {
                             .andExpect(model().hasErrors())
                             .andExpect(view().name("settings/password"));
     }
+
+    @DisplayName("닉네임수정화면나오는지 테스트")
+    @WithAccount("byeoul")
+    @Test
+    void 닉네임수정폼성공() throws Exception {
+        mockMvc.perform(get("/settings/account"))
+                    .andExpect(status().isOk())
+                    .andExpect(model().attributeExists("account"))
+                    .andExpect(model().attributeExists("accountForm"))
+                    .andExpect(view().name("settings/account"));
+    }
+
+    @DisplayName("닉네임수정기능성공")
+    @WithAccount("byeoul")
+    @Test
+    void 닉네임수정기능성공() throws Exception {
+        mockMvc.perform(post("/settings/account")
+                    .param("nickname","realnickkk")
+                    .with(csrf()))
+                        .andExpect(status().is3xxRedirection())
+                        .andExpect(redirectedUrl("/settings/account"));
+
+        Account account = accountRepository.findByNickname("realnickkk");
+        assertNotNull(account);
+    }
 }
