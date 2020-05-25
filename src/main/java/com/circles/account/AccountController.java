@@ -98,6 +98,11 @@ public class AccountController {
         return "account/profile";
     }
 
+    @GetMapping("/email-login")
+    public String getEmailLoginForm(Model model){
+        return "account/emailLogin";
+    }
+
     private boolean isOwner(String nickname, Account account) {
         return nickname.equals(account.getNickname());
     }

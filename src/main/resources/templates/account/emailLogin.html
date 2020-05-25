@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body class="bg-warning">
+<div th:replace="fragments.html :: main-nav"></div>
+
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-2">
+            <div th:replace="fragments.html :: menu-setting (currentMenu='password')"></div>
+
+        </div>
+        <div class="col-7">
+            <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-5" role="alert">
+                <span th:text="${message}">메세지</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                    <span aria-hidden="true"></span>
+                </button>
+
+            </div>
+            <div class="row-12">
+                <h3 class="col-sm-12">이메일 로그인</h3>
+            </div>
+            <div class="row">
+                <form class="col-sm-7" th:action="@{/email-login}" id="form" method="post">
+                    <div class="form-group">
+                        <label for="email">가입된 이메일</label>
+                        <input type="text" id="email" class="form-control" placeholder="abc@email.com" required>
+                        <small id="emailHelp">
+                            가입할때 사용한 이메일 입력하세여
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-danger" id="emailLoginBtn">이메일에 링크전송</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
