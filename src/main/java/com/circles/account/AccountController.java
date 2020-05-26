@@ -2,6 +2,7 @@ package com.circles.account;
 
 import com.circles.domain.Account;
 import lombok.RequiredArgsConstructor;
+import org.dom4j.rule.Mode;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -100,6 +102,18 @@ public class AccountController {
 
     @GetMapping("/email-login")
     public String getEmailLoginForm(Model model){
+        return "account/emailLogin";
+    }
+
+    @PostMapping("/email-login")
+    public String sendLoginLinkToEmail(@RequestParam String email, RedirectAttributes redirectAttributes, Model model){
+        Account myAccount = accountService.findByEmail(email);
+        if(myAccount == null){
+            //todo 에러 메세지
+            return "account/emailLogin";
+        }
+        accountService.sendLoginLinkEmail(myAccount);
+        redirectAttributes.addFlashAttribute("message","메일이 전송되었음");
         return "account/emailLogin";
     }
 

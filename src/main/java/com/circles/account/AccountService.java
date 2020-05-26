@@ -134,4 +134,13 @@ public class AccountService implements UserDetailsService {
         accountRepository.save(account);
         login(account);
     }
+
+    public void sendLoginLinkEmail(Account myAccount) {
+        myAccount.generateEmailCheckToken(); //매번 토큰 새로 생성
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setSubject("로그인 링크 메일입니다.");
+        simpleMailMessage.setTo(myAccount.getEmail());
+        simpleMailMessage.setText("/login-token?token="+myAccount.getEmailCheckToken()+"&email="+myAccount.getEmail());
+        javaMailSender.send(simpleMailMessage);
+    }
 }
