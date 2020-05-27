@@ -114,7 +114,7 @@ public class AccountController {
         }
         accountService.sendLoginLinkEmail(myAccount);
         redirectAttributes.addFlashAttribute("message","메일이 전송되었음");
-        return "account/emailLogin";
+        return "redirect:/account/emailLogin";
     }
 
     private boolean isOwner(String nickname, Account account) {

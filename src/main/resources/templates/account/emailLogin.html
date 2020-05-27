@@ -6,10 +6,6 @@
 
 <div class="container">
     <div class="row mt-5 justify-content-center">
-        <div class="col-2">
-            <div th:replace="fragments.html :: menu-setting (currentMenu='password')"></div>
-
-        </div>
         <div class="col-7">
             <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-5" role="alert">
                 <span th:text="${message}">메세지</span>
