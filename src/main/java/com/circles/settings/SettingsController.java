@@ -103,4 +103,10 @@ public class SettingsController {
         accountService.updateAccount(account,accountForm);
         return "redirect:/settings/account";
     }
+
+    @GetMapping("/settings/tag")
+    public String getTagView(@CurrentUser Account account, Model model){
+        model.addAttribute(account);
+        return "/settings/tag";
+    }
 }
