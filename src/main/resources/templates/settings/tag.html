@@ -29,7 +29,21 @@
 <script>
 
 $(function(){
+    let $tags = $('input[name=tag]').val();
+    let jsonFormat = {"tagName" : $tags}
+    function tagAjaxReq(url,jsonFormat){
+         $.ajax({
+            method : 'post',
+            url : '/settings/tag'+url,
+            data : JSON.stringify(jsonFormat),
+            dataType : 'json'
+        }).done(function(succ){
+            alert(succ);
+        }).fail(function(fail){
+            alert('fuck '+fail);
+        })
 
+    }
     var input = document.querySelector('input[name=tag]'),
     tagify = new Tagify(input, {
         pattern             : /^.{0,10}$/,
@@ -64,9 +78,9 @@ $(function(){
            tagData.value = 's✲✲t'
     }
 
-    tagify.on('add', function(e){
-        console.log(e.detail)
-    });
+
+    tagify.on('add', tagAjaxReq('/add',jsonFormat));
+
 
     tagify.on('invalid', function(e){
         console.log(e, e.detail);

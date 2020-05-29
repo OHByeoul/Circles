@@ -9,13 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -108,5 +106,11 @@ public class SettingsController {
     public String getTagView(@CurrentUser Account account, Model model){
         model.addAttribute(account);
         return "/settings/tag";
+    }
+
+    @PostMapping("/settings/tag/add")
+    public void addTag(@CurrentUser Account account, @RequestParam Map<String,String> params) {
+        System.out.println("donnnnne");
+        System.out.println(params.toString());
     }
 }
