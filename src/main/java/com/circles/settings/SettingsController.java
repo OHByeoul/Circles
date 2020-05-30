@@ -109,7 +109,7 @@ public class SettingsController {
     }
 
     @PostMapping("/settings/tag/add")
-    public void addTag(@CurrentUser Account account, @RequestParam Map<String,String> params) {
+    public void addTag(@CurrentUser Account account, @RequestBody Map<String,String> params) {
         System.out.println("donnnnne");
         System.out.println(params.toString());
     }
