@@ -19,17 +19,41 @@
                     <div class="alert alert-info" role="alert">
                         활동하고 싶은 서클을 입력하면, 나중에 해당 키워드의 서클이 생길 때, 알림을 받을 수 있음
                     </div>
-                    <input type="text" id="tag" name="tag" th:value="${#strings.listJoin(tag,',')}"/>
+                    <input type="text" id="tag" name="tagName" th:value="${#strings.listJoin(tag,',')}"/>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+<script th:inline="javascript">
+    let csrfToken = /*[[${_csrf.token}]]*/ null;
+    let csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+    $(document).ajaxSend(function(e,xhr,options){
+        xhr.setRequestHeader(csrfHeader, csrfToken);
+    });
+
+</script>
 <script>
 
 $(function(){
-    var input = document.querySelector('input[name=tag]'),
+
+
+    function tagAjaxReq(url,data){
+         $.ajax({
+            method : 'post',
+            url : '/settings/tag'+url,
+            data : JSON.stringify({'tagName' : data}),
+            contentType : 'application/json',
+            dataType : 'json'
+        }).done(function(succ){
+            alert(succ);
+        }).fail(function(fail){
+            alert('fuck '+fail);
+        })
+    }
+
+    var input = document.querySelector('input[name=tagName]'),
     tagify = new Tagify(input, {
         pattern             : /^.{0,10}$/,
         delimiters          : ",| ",        // add new tags when a comma or a space character is entered
@@ -63,30 +87,17 @@ $(function(){
            tagData.value = 's✲✲t'
     }
 
+     tagify.on('add', add);
 
-    tagify.on('add', tagAjaxReq('/add'));
+    function add(e){
+        tagAjaxReq('/add',e.detail.data.value);
+    }
 
 
     tagify.on('invalid', function(e){
         console.log(e, e.detail);
     });
 })
-
-
-    function tagAjaxReq(url){
-    let $tags = $('input[name=tag]').val();
-    let jsonFormat = {"tagName" : $tags}
-         $.ajax({
-            method : 'post',
-            url : '/settings/tag'+url,
-            data : JSON.stringify(jsonFormat),
-            dataType : 'json'
-        }).done(function(succ){
-            alert(succ);
-        }).fail(function(fail){
-            alert('fuck '+fail);
-        })
-    }
 </script>
 </body>
 </html>

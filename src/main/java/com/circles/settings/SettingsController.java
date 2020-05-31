@@ -5,6 +5,7 @@ import com.circles.account.CurrentUser;
 import com.circles.domain.Account;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -109,8 +110,10 @@ public class SettingsController {
     }
 
     @PostMapping("/settings/tag/add")
-    public void addTag(@CurrentUser Account account, @RequestBody Map<String,String> params) {
+    @ResponseBody
+    public ResponseEntity addTag(@CurrentUser Account account, @RequestBody TagForm tagForm) {
         System.out.println("donnnnne");
-        System.out.println(params.toString());
+        System.out.println(tagForm.toString());
+        return ResponseEntity.ok().build();
     }
 }
