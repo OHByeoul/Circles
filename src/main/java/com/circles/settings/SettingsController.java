@@ -3,6 +3,7 @@ package com.circles.settings;
 import com.circles.account.AccountService;
 import com.circles.account.CurrentUser;
 import com.circles.domain.Account;
+import com.circles.domain.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import java.util.Map;
 public class SettingsController {
 
     private final AccountService accountService;
+    private final TagService tagService;
     private final ModelMapper modelMapper;
 
     @InitBinder("password")
@@ -112,8 +114,12 @@ public class SettingsController {
     @PostMapping("/settings/tag/add")
     @ResponseBody
     public ResponseEntity addTag(@CurrentUser Account account, @RequestBody TagForm tagForm) {
-        System.out.println("donnnnne");
-        System.out.println(tagForm.toString());
+        String tagName = tagForm.getTagName();
+        Tag tag = tagService.findByTitle(tagName);
+        if(tag == null){
+            tag = tagService.addTag(Tag.builder().title(tagForm.getTagName()).build());
+        }
+        accountService.addTag(account,tag);
         return ResponseEntity.ok().build();
     }
 }

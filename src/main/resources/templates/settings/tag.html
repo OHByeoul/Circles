@@ -20,6 +20,9 @@
                         활동하고 싶은 서클을 입력하면, 나중에 해당 키워드의 서클이 생길 때, 알림을 받을 수 있음
                     </div>
                     <input type="text" id="tag" name="tagName" th:value="${#strings.listJoin(tag,',')}"/>
+                    <div id = "tags">
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -47,6 +50,7 @@ $(function(){
             contentType : 'application/json',
             dataType : 'json'
         }).done(function(succ){
+        tags.
             alert(succ);
         }).fail(function(fail){
             alert('fuck '+fail);

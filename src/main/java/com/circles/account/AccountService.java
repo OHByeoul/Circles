@@ -1,10 +1,8 @@
 package com.circles.account;
 
 import com.circles.domain.Account;
-import com.circles.settings.AccountForm;
-import com.circles.settings.Notification;
-import com.circles.settings.Password;
-import com.circles.settings.Profile;
+import com.circles.domain.Tag;
+import com.circles.settings.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +29,7 @@ public class AccountService implements UserDetailsService {
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final TagRepository tagRepository;
 
     @Transactional
     public Account createNewAccount(SignUpForm signUpForm) {
@@ -142,5 +142,10 @@ public class AccountService implements UserDetailsService {
         simpleMailMessage.setTo(myAccount.getEmail());
         simpleMailMessage.setText("/login-token?token="+myAccount.getEmailCheckToken()+"&email="+myAccount.getEmail());
         javaMailSender.send(simpleMailMessage);
+    }
+
+    public void addTag(Account account, Tag tag) {
+        Optional<Account> myId = accountRepository.findById(account.getId());
+        myId.ifPresent(me -> me.getTags().add(tag));
     }
 }
