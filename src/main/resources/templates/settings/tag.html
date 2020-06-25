@@ -48,12 +48,13 @@ $(function(){
             url : '/settings/tag'+url,
             data : JSON.stringify({'tagName' : data}),
             contentType : 'application/json',
-            dataType : 'json'
-        }).done(function(succ){
-        tags.
+            dataType : 'json',
+            autocomplete:{
+                enabled : true,
+                rightKey : true
+            },
+        }).done(function(data,status){
             alert(succ);
-        }).fail(function(fail){
-            alert('fuck '+fail);
         })
     }
 
