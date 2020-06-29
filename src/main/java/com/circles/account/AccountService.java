@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -147,5 +148,11 @@ public class AccountService implements UserDetailsService {
     public void addTag(Account account, Tag tag) {
         Optional<Account> myId = accountRepository.findById(account.getId());
         myId.ifPresent(me -> me.getTags().add(tag));
+        accountRepository.flush();
+    }
+
+    public Set<Tag> getTags(Account account) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        return byId.orElseThrow().getTags();
     }
 }

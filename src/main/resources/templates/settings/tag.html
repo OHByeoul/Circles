@@ -20,9 +20,7 @@
                         활동하고 싶은 서클을 입력하면, 나중에 해당 키워드의 서클이 생길 때, 알림을 받을 수 있음
                     </div>
                     <input type="text" id="tag" name="tagName" th:value="${#strings.listJoin(tag,',')}"/>
-                    <div id = "tags">
-
-                    </div>
+                    <input type="text" id="tagList" name="tagList" th:value="${#strings.listJoin(tagList,',')}"/>
                 </div>
             </div>
         </div>
@@ -35,7 +33,6 @@
     $(document).ajaxSend(function(e,xhr,options){
         xhr.setRequestHeader(csrfHeader, csrfToken);
     });
-
 </script>
 <script>
 
@@ -55,6 +52,7 @@ $(function(){
             },
         }).done(function(data,status){
             alert(succ)
+                    $('tags').eq(1).attr('readonly',true);
         })
     }
 
@@ -68,6 +66,21 @@ $(function(){
         transformTag        : transformTag,
         backspace           : "edit",
         placeholder         : "type something",
+        dropdown : {
+            enabled: 3,
+        }
+    })
+
+        var ouput = document.querySelector('input[name=tagList]'),
+    outputTagify = new Tagify(ouput, {
+        pattern             : /^.{0,10}$/,
+        delimiters          : ",| ",        // add new tags when a comma or a space character is entered
+        keepInvalidTags     : true,         // do not remove invalid tags (but keep them marked as invalid)
+        editTags            : 1,            // single click to edit a tag
+        maxTags             : 10,
+        transformTag        : transformTag,
+        backspace           : "invalid",
+        placeholder         : "dont typing",
         dropdown : {
             enabled: 3,
         }
@@ -96,6 +109,7 @@ $(function(){
 
     function add(e){
         tagAjaxReq('/add',e.detail.data.value);
+         $('tags').eq(1).attr('readonly',true);
     }
 
 
