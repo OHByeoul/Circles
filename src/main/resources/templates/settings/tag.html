@@ -19,6 +19,7 @@
                     <div class="alert alert-info" role="alert">
                         활동하고 싶은 서클을 입력하면, 나중에 해당 키워드의 서클이 생길 때, 알림을 받을 수 있음
                     </div>
+                    <div id="whitelist"th:text="${whitelist}" hidden></div>
                     <input type="text" id="tag" name="tagName" th:value="${#strings.listJoin(tag,',')}"/>
                     <input type="text" id="tagList" name="tagList" th:value="${#strings.listJoin(tagList,',')}"/>
                 </div>
@@ -59,6 +60,7 @@ $(function(){
     var input = document.querySelector('input[name=tagName]'),
     tagify = new Tagify(input, {
         pattern             : /^.{0,10}$/,
+        whitelist           : JSON.parse(document.querySelector("#whitelist").textContent),
         delimiters          : ",| ",        // add new tags when a comma or a space character is entered
         keepInvalidTags     : true,         // do not remove invalid tags (but keep them marked as invalid)
         editTags            : 1,            // single click to edit a tag
@@ -113,8 +115,9 @@ $(function(){
     }
 
 
-    tagify.on('invalid', function(e){
+    tagify.on('remove', function(e){
         console.log(e, e.detail);
+        tagAjaxReq('/remove',e.detail.data.value);
     });
 })
 </script>
