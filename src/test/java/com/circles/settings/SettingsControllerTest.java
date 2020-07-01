@@ -4,12 +4,14 @@ import com.circles.account.AccountRepository;
 import com.circles.account.AccountService;
 import com.circles.domain.Account;
 import com.circles.domain.Tag;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -34,7 +36,13 @@ class SettingsControllerTest {
     AccountRepository accountRepository;
 
     @Autowired
+    TagRepository tagRepository;
+
+    @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @AfterEach
     void deleteProfile(){
@@ -164,5 +172,46 @@ class SettingsControllerTest {
                 .andExpect(model().attributeExists("tagList"))
                 .andExpect(model().attributeExists("account"))
                 .andExpect(view().name("/settings/tag"));
+    }
+
+    @DisplayName("태그추가기능")
+    @WithAccount("byeoul")
+    @Test
+    void 태그추가기능() throws  Exception{
+        TagForm tagForm = new TagForm();
+        tagForm.setTagName("addTag");
+
+        mockMvc.perform(post("/settings/tag/add")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(tagForm))
+                    .with(csrf()))
+                    .andExpect(status().isOk());
+
+        Tag newTag = tagRepository.findByTitle("newTag");
+        assertNotNull(newTag);
+        Account my = accountRepository.findByNickname("byeoul");
+        assertTrue(my.getTags().contains(newTag));
+    }
+
+    @DisplayName("태그삭제기능")
+    @WithAccount("byeoul")
+    @Test
+    void 태그삭제기능() throws  Exception{
+        Account my = accountRepository.findByNickname("byeoul");
+        Tag tag = tagRepository.save(Tag.builder().title("newTag").build());
+        accountService.addTag(my,tag);
+
+        assertTrue(my.getTags().contains(tag));
+
+        TagForm tagForm = new TagForm();
+        tagForm.setTagName("addTag");
+
+        mockMvc.perform(post("/settings/tag/remove")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString("newTag"))
+                    .with(csrf()))
+                    .andExpect(status().isOk());
+
+        assertFalse(my.getTags().contains(tag));
     }
 }
