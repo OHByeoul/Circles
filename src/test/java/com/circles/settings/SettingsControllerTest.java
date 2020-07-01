@@ -3,6 +3,7 @@ package com.circles.settings;
 import com.circles.account.AccountRepository;
 import com.circles.account.AccountService;
 import com.circles.domain.Account;
+import com.circles.domain.Tag;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -149,5 +152,17 @@ class SettingsControllerTest {
 
         Account account = accountRepository.findByNickname("realnickkk");
         assertNotNull(account);
+    }
+
+    @DisplayName("태그조회기능")
+    @WithAccount("byeoul")
+    @Test
+    void 태그조회기능() throws  Exception{
+        mockMvc.perform(get("/settings/tag"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("whitelist"))
+                .andExpect(model().attributeExists("tagList"))
+                .andExpect(model().attributeExists("account"))
+                .andExpect(view().name("/settings/tag"));
     }
 }
