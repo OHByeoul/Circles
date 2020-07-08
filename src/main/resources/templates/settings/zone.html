@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<style>
+    .tagify--outside{
+    border: 0;
+}
+
+.tagify--outside .tagify__input{
+  order: -1;
+  flex: 100%;
+  border: 1px solid var(--tags-border-color);
+  margin-bottom: 1em;
+  transition: .1s;
+}
+
+.tagify--outside .tagify__input:hover{ border-color:var(--tags-hover-border-color); }
+.tagify--outside.tagify--focus .tagify__input{
+  transition:0s;
+  border-color: var(--tags-focus-border-color);
+}
+</style>
+<body class="bg-warning">
+<div th:replace="fragments.html :: main-nav"></div>
+
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-2">
+            <div th:replace="fragments.html :: menu-setting (currentMenu='zone')"></div>
+
+        </div>
+        <div class="col-7">
+            <div class="row-12">
+                <h3 class="col-sm-12">지역 키워드</h3>
+            </div>
+            <div class="row">
+                <div class="col-10">
+                    <div class="alert alert-info" role="alert">
+                        지역 키워드
+                    </div>
+                    <div id="whitelist"th:text="${whitelist}" hidden></div>
+                    <input type="text" id="zone" name="zoneName" th:value="${#strings.listJoin(zone,',')}"/>
+                    <input type="text" id="zoneList" name="zoneList" th:value="${#strings.listJoin(zoneList,',')}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+<script th:inline="javascript">
+    let csrfToken = /*[[${_csrf.token}]]*/ null;
+    let csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+    $(document).ajaxSend(function(e,xhr,options){
+        xhr.setRequestHeader(csrfHeader, csrfToken);
+    });
+</script>
+<script>
+
+$(function(){
+
+
+    function zoneAjaxReq(url,data){
+         $.ajax({
+            method : 'post',
+            url : '/settings/zone'+url,
+            data : JSON.stringify({'zoneName' : data}),
+            contentType : 'application/json',
+            dataType : 'json',
+            autocomplete:{
+                enabled : true,
+                rightKey : true
+            },
+        }).done(function(data,status){
+            alert(succ)
+                    //$('zones').eq(1).attr('readonly',true);
+        })
+    }
+
+    var input = document.querySelector('input[name=zoneName]')
+// init Tagify script on the above inputs
+var tagify = new Tagify(input, {
+  whitelist: ["foo", "bar", "baz"],
+  dropdown: {
+    position: "input",
+    enabled : 0 // always opens dropdown when input gets focus
+  }
+})
+
+     tagify.on('add', add);
+
+    function add(e){
+        zoneAjaxReq('/add',e.detail.data.value);
+         $('zones').eq(1).attr('readonly',true);
+    }
+
+
+    tagify.on('remove', function(e){
+        console.log(e, e.detail);
+        zoneAjaxReq('/remove',e.detail.data.value);
+    });
+})
+</script>
+</body>
+</html>

@@ -147,4 +147,10 @@ public class SettingsController {
         accountService.removeTag(account,tag);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/settings/zone")
+    public String getZoneView(@CurrentUser Account account, Model model){
+        model.addAttribute(account);
+        return "/settings/zone";
+    }
 }
