@@ -39,8 +39,8 @@
                         지역 키워드
                     </div>
                     <div id="whitelist"th:text="${whitelist}" hidden></div>
-                    <input type="text" id="zone" name="zoneName" th:value="${#strings.listJoin(zone,',')}"/>
-                    <input type="text" id="zoneList" name="zoneList" th:value="${#strings.listJoin(zoneList,',')}"/>
+                    <input type="text" id="zone" name="zoneName" class="tagify-outside"/>
+              <!--      <input type="text" id="zoneList" name="zoneList" th:value="${#strings.listJoin(zoneList,',')}"/>-->
                 </div>
             </div>
         </div>
@@ -76,13 +76,14 @@ $(function(){
         })
     }
 
-    var input = document.querySelector('input[name=zoneName]')
+    var input = document.querySelector('#zone')
 // init Tagify script on the above inputs
 var tagify = new Tagify(input, {
   whitelist: ["foo", "bar", "baz"],
+  pattern: /^.{0,20}$/,
   dropdown: {
-    position: "input",
-    enabled : 0 // always opens dropdown when input gets focus
+    //position: "input",
+    enabled : 1 // always opens dropdown when input gets focus
   }
 })
 
@@ -90,7 +91,6 @@ var tagify = new Tagify(input, {
 
     function add(e){
         zoneAjaxReq('/add',e.detail.data.value);
-         $('zones').eq(1).attr('readonly',true);
     }
 
 
@@ -98,6 +98,9 @@ var tagify = new Tagify(input, {
         console.log(e, e.detail);
         zoneAjaxReq('/remove',e.detail.data.value);
     });
+
+    tagify.DOM.input.classList.add('form-control');
+    tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
 })
 </script>
 </body>

@@ -34,4 +34,12 @@ public class ZoneService {
                 zoneReopsitory.saveAll(excelLists);
             }
         }
+
+    public Zone findByName(String zoneName) {
+        return zoneReopsitory.findByName(zoneName);
+    }
+
+    public void addZone(Zone zone) {
+            zoneReopsitory.save(zone);
+    }
 }

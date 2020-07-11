@@ -63,6 +63,9 @@ public class Account {
     @ManyToMany
     private Set<Tag> tags;
 
+    @ManyToMany
+    private Set<Zone> zones;
+
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();
         this.emailCheckTokenGenerateTime = LocalDateTime.now();

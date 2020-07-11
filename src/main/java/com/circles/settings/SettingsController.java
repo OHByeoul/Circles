@@ -4,8 +4,11 @@ import com.circles.account.AccountService;
 import com.circles.account.CurrentUser;
 import com.circles.domain.Account;
 import com.circles.domain.Tag;
+import com.circles.domain.Zone;
+import com.circles.zone.ZoneService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.mail.iap.Response;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +32,7 @@ public class SettingsController {
 
     private final AccountService accountService;
     private final TagService tagService;
+    private final ZoneService zoneService;
     private final ModelMapper modelMapper;
     private final ObjectMapper objectMapper;
 
@@ -153,4 +157,18 @@ public class SettingsController {
         model.addAttribute(account);
         return "/settings/zone";
     }
+
+    @PostMapping("/settings/zone/add")
+    public ResponseEntity addZone(@CurrentUser Account account, @RequestBody ZoneForm zoneForm,Model model){
+        //todo 지역 이름이 있으면 말고, 없을경우에 디비에 저장
+        String zoneName = zoneForm.getZoneName();
+        Zone zone = zoneService.findByName(zoneName);
+        if(zone == null){
+            return ResponseEntity.badRequest().build();
+        }
+
+        zoneService.addZone(zone);
+        return ResponseEntity.ok().build();
+    }
+
 }
