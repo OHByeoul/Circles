@@ -23,23 +23,22 @@ public class ZoneService {
 
         @PostConstruct
         public void initZoneData() throws IOException {
-            if(zoneReopsitory.count() == 0){
+            if (zoneReopsitory.count() == 0) {
                 Resource resource = new ClassPathResource("cityOfKorea.csv");
-               List<Zone> excelLists = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8).stream()
+                List<Zone> excelLists = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8).stream()
                         .map(each -> {
-                            String [] split = each.split(",");
+                            String[] split = each.split(",");
                             return Zone.builder().city(split[0]).localNameOfCity(split[1]).province(split[2]).build();
                         }).collect(Collectors.toList());
 
                 zoneReopsitory.saveAll(excelLists);
             }
         }
-
-    public Zone findByName(String zoneName) {
-        return zoneReopsitory.findByName(zoneName);
-    }
-
     public void addZone(Zone zone) {
             zoneReopsitory.save(zone);
+    }
+
+    public Zone findByCityAndProvince(String cityName, String provinceName) {
+           return zoneReopsitory.findByCityAndProvince(cityName, provinceName);
     }
 }
