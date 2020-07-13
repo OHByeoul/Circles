@@ -27,5 +27,5 @@ public class Zone {
     private String province;
 
     @Override
-    public String toString(){return String.format("%s, %s, %s",city,localNameOfCity,province);}
+    public String toString(){return String.format("%s(%s)/%s",city,localNameOfCity,province);}
 }

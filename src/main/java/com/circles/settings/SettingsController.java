@@ -154,6 +154,9 @@ public class SettingsController {
 
     @GetMapping("/settings/zone")
     public String getZoneView(@CurrentUser Account account, Model model){
+        Set<Zone> zones = accountService.getZones(account);
+        List<String> zoneList = zones.stream().map(Zone::toString).collect(Collectors.toList());
+        model.addAttribute("zoneList",zoneList);
         model.addAttribute(account);
         return "/settings/zone";
     }

@@ -39,7 +39,7 @@
                         지역 키워드
                     </div>
                     <div id="whitelist"th:text="${whitelist}" hidden></div>
-                    <input type="text" id="zone" name="zoneName" class="tagify-outside"/>
+                    <input type="text" id="zone" name="zoneName" class="tagify-outside" th:value="${#strings.listJoin(zoneList,',')"/>
               <!--      <input type="text" id="zoneList" name="zoneList" th:value="${#strings.listJoin(zoneList,',')}"/>-->
                 </div>
             </div>

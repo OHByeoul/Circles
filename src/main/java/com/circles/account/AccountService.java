@@ -2,7 +2,9 @@ package com.circles.account;
 
 import com.circles.domain.Account;
 import com.circles.domain.Tag;
+import com.circles.domain.Zone;
 import com.circles.settings.*;
+import com.circles.zone.ZoneReopsitory;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
@@ -27,6 +29,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
+    private final ZoneReopsitory zoneReopsitory;
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
@@ -159,5 +162,11 @@ public class AccountService implements UserDetailsService {
     public void removeTag(Account account, Tag tag) {
         Optional<Account> myId = accountRepository.findById(account.getId());
         myId.ifPresent(me -> me.getTags().remove(tag));
+    }
+
+    public  Set<Zone> getZones(Account account) {
+        zoneReopsitory.flush();
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        return byId.orElseThrow().getZones();
     }
 }
