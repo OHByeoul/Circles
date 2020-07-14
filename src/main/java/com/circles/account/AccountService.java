@@ -164,8 +164,8 @@ public class AccountService implements UserDetailsService {
         myId.ifPresent(me -> me.getTags().remove(tag));
     }
 
+    @Transactional(readOnly = true)
     public  Set<Zone> getZones(Account account) {
-        zoneReopsitory.flush();
         Optional<Account> byId = accountRepository.findById(account.getId());
         return byId.orElseThrow().getZones();
     }

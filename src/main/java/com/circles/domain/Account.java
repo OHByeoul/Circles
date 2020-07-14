@@ -65,7 +65,10 @@ public class Account {
     private Set<Tag> tags = new HashSet<>();
 
     @ManyToMany
-    private Set<Zone> zones = new HashSet<>();
+    @JoinTable(name="account_zone",
+            joinColumns = @JoinColumn(name = "account_no"),
+            inverseJoinColumns = @JoinColumn(name = "zone_no"))
+    private Set<Zone> zones = new HashSet<Zone>();
 
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();

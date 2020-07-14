@@ -3,18 +3,19 @@ package com.circles.domain;
 import com.sun.istack.Nullable;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
 @EqualsAndHashCode(of = "id")
 @Builder @AllArgsConstructor @NoArgsConstructor
-public class Zone {
+public class Zone implements Serializable {
     @Id
     @GeneratedValue
+    @Column(name="zone_id")
     private Long id;
 
     @Column(nullable = false)

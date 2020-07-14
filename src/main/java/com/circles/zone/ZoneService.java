@@ -41,9 +41,9 @@ public class ZoneService {
         zoneReopsitory.save(zone);
     }
 
-    public Zone findByCityAndProvince(String cityName, String provinceName) {
-        return zoneReopsitory.findByCityAndProvince(cityName, provinceName);
-    }
+    //public Zone findByCityAndProvince(String cityName, String provinceName) {
+    //    return zoneReopsitory.findByCityAndProvince(cityName, provinceName);
+    //}
 
 
 }
