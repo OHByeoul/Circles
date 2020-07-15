@@ -153,10 +153,13 @@ public class SettingsController {
     }
 
     @GetMapping("/settings/zone")
-    public String getZoneView(@CurrentUser Account account, Model model){
+    public String getZoneView(@CurrentUser Account account, Model model) throws JsonProcessingException {
         Set<Zone> zones = accountService.getZones(account);
         List<String> zoneList = zones.stream().map(Zone::toString).collect(Collectors.toList());
         model.addAttribute("zoneList",zoneList);
+
+        List<String> whiteList = zoneService.findAll().stream().map(Zone::toString).collect(Collectors.toList());
+        model.addAttribute("whiteList",objectMapper.writeValueAsString(whiteList));
         model.addAttribute(account);
         return "/settings/zone";
     }
@@ -164,14 +167,14 @@ public class SettingsController {
     @PostMapping("/settings/zone/add")
     public ResponseEntity addZone(@CurrentUser Account account, @RequestBody ZoneForm zoneForm,Model model){
         //todo 지역 이름이 있으면 말고, 없을경우에 디비에 저장
-        /*
         Zone zone = zoneService.findByCityAndProvince(zoneForm.getCityName(), zoneForm.getProvinceName());
         if(zone == null){
             return ResponseEntity.badRequest().build();
         }
 
-        zoneService.addZone(zone);
-        */
+        //zoneService.addZone(zone);
+        accountService.addZone(account,zone);
+
         return ResponseEntity.ok().build();
 
     }

@@ -38,8 +38,10 @@
                     <div class="alert alert-info" role="alert">
                         지역 키워드
                     </div>
-                    <div id="whitelist"th:text="${whitelist}" hidden></div>
-                    <input type="text" id="zone" name="zoneName" class="tagify-outside" />
+                    <div id="whiteList"th:text="${whiteList}" hidden></div>
+                    <div th:if="${not #strings.isEmpty(zoneList)}">
+                        <input type="text" id="zone" name="zoneName" class="tagify-outside" th:value="${#strings.listJoin(zoneList,',')}"/>
+                    </div>
               <!--      <input type="text" id="zoneList" name="zoneList" th:value="${#strings.listJoin(zoneList,',')}"/>-->
                 </div>
             </div>
@@ -79,7 +81,7 @@ $(function(){
     var input = document.querySelector('#zone')
 // init Tagify script on the above inputs
 var tagify = new Tagify(input, {
-  whitelist: ["foo", "bar", "baz"],
+  whitelist: JSON.parse(document.querySelector('#whiteList').textContent),
   pattern: /^.{0,20}$/,
   dropdown: {
     //position: "input",
