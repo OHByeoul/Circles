@@ -166,7 +166,6 @@ public class SettingsController {
 
     @PostMapping("/settings/zone/add")
     public ResponseEntity addZone(@CurrentUser Account account, @RequestBody ZoneForm zoneForm,Model model){
-        //todo 지역 이름이 있으면 말고, 없을경우에 디비에 저장
         Zone zone = zoneService.findByCityAndProvince(zoneForm.getCityName(), zoneForm.getProvinceName());
         if(zone == null){
             return ResponseEntity.badRequest().build();
@@ -174,9 +173,14 @@ public class SettingsController {
 
         //zoneService.addZone(zone);
         accountService.addZone(account,zone);
-
         return ResponseEntity.ok().build();
+    }
 
+    @PostMapping("/settings/zone/remove")
+    public ResponseEntity removeZone(@CurrentUser Account account,@RequestBody ZoneForm zoneForm, Model model){
+        Zone zone = zoneService.findByCityAndProvince(zoneForm.getCityName(),zoneForm.getProvinceName());
+        accountService.removeZone(account,zone);
+        return ResponseEntity.ok().build();
     }
 
 }
