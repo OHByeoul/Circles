@@ -27,8 +27,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
+@RequestMapping(SettingsController.SETTINGS)
 @RequiredArgsConstructor
 public class SettingsController {
+    static final String SETTINGS = "/settings";
+    static final String ZONE = "/zone";
+    static final String TAG = "/tag";
 
     private final AccountService accountService;
     private final TagService tagService;
@@ -41,14 +45,14 @@ public class SettingsController {
         webDataBinder.addValidators(new PasswordValidator());
     }
 
-    @GetMapping("/settings/profile")
+    @GetMapping("/profile")
     public String profileUpdate(@CurrentUser Account account, Model model){
         model.addAttribute(account);
         model.addAttribute(modelMapper.map(account,Profile.class));
         return "settings/profile";
     }
 
-    @PostMapping("/settings/profile")
+    @PostMapping("/profile")
     public String profileUpdate(@CurrentUser Account account, @Valid @ModelAttribute Profile profile,
                                 Errors errors, Model model, RedirectAttributes attributes){
         if(errors.hasErrors()){
@@ -60,14 +64,14 @@ public class SettingsController {
         return "redirect:/settings/profile";
     }
 
-    @GetMapping("/settings/password")
+    @GetMapping("/password")
     public String passwordUpdate(@CurrentUser Account account, Model model){
         model.addAttribute(account);
         model.addAttribute("password", new Password());
         return "settings/password";
     }
 
-    @PostMapping("/settings/password")
+    @PostMapping("/password")
     public String passwordUpdate(@CurrentUser Account account,@Valid @ModelAttribute Password password,
                                  Errors errors, Model model, RedirectAttributes attributes){
         if(errors.hasErrors()){
@@ -80,14 +84,14 @@ public class SettingsController {
         return "redirect:/settings/password";
     }
 
-    @GetMapping("/settings/notification")
+    @GetMapping("/notification")
     public String updateNotification(@CurrentUser Account account, Model model){
         model.addAttribute(account);
         model.addAttribute(modelMapper.map(account,Notification.class));
         return "settings/notification";
     }
 
-    @PostMapping("/settings/notification")
+    @PostMapping("/notification")
     public String updateNotification(@CurrentUser Account account, @Valid @ModelAttribute Notification notification
                                      ,RedirectAttributes redirectAttributes,Errors errors ,Model model){
         if(errors.hasErrors()){
@@ -99,14 +103,14 @@ public class SettingsController {
         return "redirect:/settings/notification";
     }
 
-    @GetMapping("/settings/account")
+    @GetMapping("/account")
     public String updateAccount(@CurrentUser Account account, Model model){
         model.addAttribute(account);
         model.addAttribute("accountForm",new AccountForm(account));
         return "settings/account";
     }
 
-    @PostMapping("/settings/account")
+    @PostMapping("/account")
     public String updateAccount(@CurrentUser Account account,@Valid @ModelAttribute AccountForm accountForm,Errors errors, Model model){
         if(errors.hasErrors()){
             model.addAttribute(account);
@@ -116,7 +120,7 @@ public class SettingsController {
         return "redirect:/settings/account";
     }
 
-    @GetMapping("/settings/tag")
+    @GetMapping(TAG)
     public String getTagView(@CurrentUser Account account, Model model) throws JsonProcessingException {
         Set<Tag> tags = accountService.getTags(account);
         List<String> tagList = tags.stream().map(Tag::getTitle).collect(Collectors.toList());
@@ -128,7 +132,7 @@ public class SettingsController {
         return "/settings/tag";
     }
 
-    @PostMapping("/settings/tag/add")
+    @PostMapping(TAG+"/add")
     @ResponseBody
     public ResponseEntity addTag(@CurrentUser Account account, @RequestBody TagForm tagForm) {
         String tagName = tagForm.getTagName();
@@ -140,7 +144,7 @@ public class SettingsController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/settings/tag/remove")
+    @PostMapping(TAG+"/remove")
     @ResponseBody
     public ResponseEntity removeTag(@CurrentUser Account account, @RequestBody TagForm tagForm) {
         String tagName = tagForm.getTagName();
@@ -152,7 +156,7 @@ public class SettingsController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/settings/zone")
+    @GetMapping(ZONE)
     public String getZoneView(@CurrentUser Account account, Model model) throws JsonProcessingException {
         Set<Zone> zones = accountService.getZones(account);
         List<String> zoneList = zones.stream().map(Zone::toString).collect(Collectors.toList());
@@ -164,7 +168,7 @@ public class SettingsController {
         return "/settings/zone";
     }
 
-    @PostMapping("/settings/zone/add")
+    @PostMapping(ZONE+"/add")
     public ResponseEntity addZone(@CurrentUser Account account, @RequestBody ZoneForm zoneForm,Model model){
         Zone zone = zoneService.findByCityAndProvince(zoneForm.getCityName(), zoneForm.getProvinceName());
         if(zone == null){
@@ -176,9 +180,13 @@ public class SettingsController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/settings/zone/remove")
+    @PostMapping(ZONE+"/remove")
     public ResponseEntity removeZone(@CurrentUser Account account,@RequestBody ZoneForm zoneForm, Model model){
         Zone zone = zoneService.findByCityAndProvince(zoneForm.getCityName(),zoneForm.getProvinceName());
+        if(zone == null){
+            return ResponseEntity.badRequest().build();
+        }
+
         accountService.removeZone(account,zone);
         return ResponseEntity.ok().build();
     }
