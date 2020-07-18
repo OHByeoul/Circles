@@ -4,6 +4,8 @@ import com.circles.account.AccountRepository;
 import com.circles.account.AccountService;
 import com.circles.domain.Account;
 import com.circles.domain.Tag;
+import com.circles.domain.Zone;
+import com.circles.zone.ZoneRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,6 +41,9 @@ class SettingsControllerTest {
     TagRepository tagRepository;
 
     @Autowired
+    ZoneRepository zoneRepository;
+
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -48,6 +53,8 @@ class SettingsControllerTest {
     void deleteProfile(){
         accountRepository.deleteAll();
     }
+
+    private Zone testZone = Zone.builder().city("test").localNameOfCity("테스트시").province("테스트주").build();
 
     @WithAccount("byeoul")
     @DisplayName("프로필 수정 테스트 - 성공")
@@ -213,5 +220,32 @@ class SettingsControllerTest {
                     .andExpect(status().isOk());
 
         assertFalse(my.getTags().contains(tag));
+    }
+
+    @DisplayName("지역추가테스트")
+    @WithAccount("byeoul")
+    @Test
+    void 지역추가기능() throws Exception {
+
+//        Zone zone = Zone.builder().city("Seoul").province("서울특별시").localNameOfCity("none").build();
+        //accountService.addZone(myAccout,zone);
+
+
+        //ZoneForm zoneForm = ZoneForm.builder().zoneName("Seoul(서울특별시)/none").build();
+        ZoneForm zoneForm = new ZoneForm();
+        zoneForm.setZoneName(testZone.toString());
+
+        mockMvc.perform(post("/settings/zone/add")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(zoneForm)))
+                .andExpect(status().isOk());
+
+
+
+        Account myAccout = accountRepository.findByNickname("byeoul");
+        Zone zone = zoneRepository.findByCityAndProvince(testZone.getCity(),testZone.getProvince());
+        assertTrue(myAccout.getZones().contains(zone));
+
     }
 }

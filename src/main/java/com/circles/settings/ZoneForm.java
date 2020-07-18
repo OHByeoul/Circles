@@ -1,11 +1,14 @@
 package com.circles.settings;
 
 import com.circles.domain.Zone;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@Builder
 public class ZoneForm {
     private String zoneName;
 

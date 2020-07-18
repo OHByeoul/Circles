@@ -4,7 +4,7 @@ import com.circles.domain.Account;
 import com.circles.domain.Tag;
 import com.circles.domain.Zone;
 import com.circles.settings.*;
-import com.circles.zone.ZoneReopsitory;
+import com.circles.zone.ZoneRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
@@ -29,7 +29,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
-    private final ZoneReopsitory zoneReopsitory;
+    private final ZoneRepository zoneRepository;
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
