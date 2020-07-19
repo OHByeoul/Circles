@@ -226,26 +226,39 @@ class SettingsControllerTest {
     @WithAccount("byeoul")
     @Test
     void 지역추가기능() throws Exception {
-
-//        Zone zone = Zone.builder().city("Seoul").province("서울특별시").localNameOfCity("none").build();
-        //accountService.addZone(myAccout,zone);
-
-
-        //ZoneForm zoneForm = ZoneForm.builder().zoneName("Seoul(서울특별시)/none").build();
         ZoneForm zoneForm = new ZoneForm();
         zoneForm.setZoneName(testZone.toString());
 
         mockMvc.perform(post("/settings/zone/add")
-                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(zoneForm)))
+                .content(objectMapper.writeValueAsString(zoneForm))
+                .with(csrf()))
                 .andExpect(status().isOk());
 
-
-
-        Account myAccout = accountRepository.findByNickname("byeoul");
+        Account myAccount = accountRepository.findByNickname("byeoul");
         Zone zone = zoneRepository.findByCityAndProvince(testZone.getCity(),testZone.getProvince());
-        assertTrue(myAccout.getZones().contains(zone));
+        assertTrue(myAccount.getZones().contains(zone));
+    }
 
+    @DisplayName("지역삭제테스트")
+    @WithAccount("byeoul")
+    @Test
+    void 지역삭제기능() throws Exception {
+        Account myAccount = accountRepository.findByNickname("byeoul");
+        //myAccount.getZones().add(testZone);
+        Zone zone = zoneRepository.findByCityAndProvince(testZone.getCity(),testZone.getProvince());
+        accountService.addZone(myAccount,zone);
+
+        ZoneForm zoneForm = new ZoneForm();
+        zoneForm.setZoneName(testZone.toString());
+
+        mockMvc.perform(post("/settings/zone/remove")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(zoneForm))
+                        .with(csrf()))
+                        .andExpect(status().isOk());
+
+
+        assertFalse(myAccount.getZones().contains(zone));
     }
 }

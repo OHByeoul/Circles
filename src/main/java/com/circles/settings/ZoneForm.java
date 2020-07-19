@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Builder
 public class ZoneForm {
     private String zoneName;
 
