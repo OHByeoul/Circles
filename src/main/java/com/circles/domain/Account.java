@@ -64,7 +64,7 @@ public class Account {
     @ManyToMany
     private Set<Tag> tags = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="account_zone",
             joinColumns = @JoinColumn(name = "account_no"),
             inverseJoinColumns = @JoinColumn(name = "zone_no"))

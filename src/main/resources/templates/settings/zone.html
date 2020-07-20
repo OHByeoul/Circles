@@ -63,7 +63,7 @@ $(function(){
 
     function zoneAjaxReq(url,data){
          $.ajax({
-            method : 'post',
+            method : 'POST',
             url : '/settings/zone'+url,
             data : JSON.stringify({'zoneName' : data}),
             contentType : 'application/json',
@@ -71,11 +71,13 @@ $(function(){
             autocomplete:{
                 enabled : true,
                 rightKey : true
-            },
-        }).done(function(data,status){
-            alert(succ)
+            }
+        }).done(function(data){
+
+            console.log(data)
+
                     //$('zones').eq(1).attr('readonly',true);
-        })
+        });
     }
 
     var input = document.querySelector('#zone')
@@ -97,7 +99,6 @@ var tagify = new Tagify(input, {
 
 
     tagify.on('remove', function(e){
-        console.log(e, e.detail);
         zoneAjaxReq('/remove',e.detail.data.value);
     });
 

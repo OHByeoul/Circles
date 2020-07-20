@@ -7,7 +7,10 @@ import com.circles.domain.Tag;
 import com.circles.domain.Zone;
 import com.circles.zone.ZoneRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Builder;
+import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -55,6 +59,17 @@ class SettingsControllerTest {
     }
 
     private Zone testZone = Zone.builder().city("test").localNameOfCity("테스트시").province("테스트주").build();
+
+    @BeforeEach
+    void beforeEach(){
+        zoneRepository.save(testZone);
+    }
+
+    @AfterEach
+    void afterEach(){
+        accountRepository.deleteAll();
+        zoneRepository.deleteAll();
+    }
 
     @WithAccount("byeoul")
     @DisplayName("프로필 수정 테스트 - 성공")
@@ -186,7 +201,7 @@ class SettingsControllerTest {
     @Test
     void 태그추가기능() throws  Exception{
         TagForm tagForm = new TagForm();
-        tagForm.setTagName("addTag");
+        tagForm.setTagName("newTag");
 
         mockMvc.perform(post("/settings/tag/add")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -199,6 +214,7 @@ class SettingsControllerTest {
         Account my = accountRepository.findByNickname("byeoul");
         assertTrue(my.getTags().contains(newTag));
     }
+
 
     @DisplayName("태그삭제기능")
     @WithAccount("byeoul")
@@ -222,8 +238,20 @@ class SettingsControllerTest {
         assertFalse(my.getTags().contains(tag));
     }
 
+    @DisplayName("지역화면테스트")
+    @WithAccount("byeoul")
+    @Test
+    void 지역화면기능() throws Exception {
+       mockMvc.perform(get("/settings/zone"))
+               .andExpect(model().attributeExists("whiteList"))
+               .andExpect(model().attributeExists("zoneList"))
+               .andExpect(view().name("/settings/zone"));
+
+    }
+
     @DisplayName("지역추가테스트")
     @WithAccount("byeoul")
+    @Transactional
     @Test
     void 지역추가기능() throws Exception {
         ZoneForm zoneForm = new ZoneForm();
@@ -242,6 +270,7 @@ class SettingsControllerTest {
 
     @DisplayName("지역삭제테스트")
     @WithAccount("byeoul")
+    @Transactional
     @Test
     void 지역삭제기능() throws Exception {
         Account myAccount = accountRepository.findByNickname("byeoul");

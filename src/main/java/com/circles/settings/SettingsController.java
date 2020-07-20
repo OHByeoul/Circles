@@ -169,7 +169,8 @@ public class SettingsController {
     }
 
     @PostMapping(ZONE+"/add")
-    public ResponseEntity addZone(@CurrentUser Account account, @RequestBody ZoneForm zoneForm,Model model){
+    @ResponseBody
+    public ResponseEntity addZone(@CurrentUser Account account, @RequestBody ZoneForm zoneForm){
         Zone zone = zoneService.findByCityAndProvince(zoneForm.getCityName(), zoneForm.getProvinceName());
         if(zone == null){
             return ResponseEntity.badRequest().build();
@@ -181,7 +182,8 @@ public class SettingsController {
     }
 
     @PostMapping(ZONE+"/remove")
-    public ResponseEntity removeZone(@CurrentUser Account account,@RequestBody ZoneForm zoneForm, Model model){
+    @ResponseBody
+    public ResponseEntity removeZone(@CurrentUser Account account,@RequestBody ZoneForm zoneForm){
         Zone zone = zoneService.findByCityAndProvince(zoneForm.getCityName(),zoneForm.getProvinceName());
         if(zone == null){
             return ResponseEntity.badRequest().build();
