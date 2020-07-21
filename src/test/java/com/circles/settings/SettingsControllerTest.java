@@ -251,7 +251,6 @@ class SettingsControllerTest {
 
     @DisplayName("지역추가테스트")
     @WithAccount("byeoul")
-    @Transactional
     @Test
     void 지역추가기능() throws Exception {
         ZoneForm zoneForm = new ZoneForm();
@@ -270,7 +269,6 @@ class SettingsControllerTest {
 
     @DisplayName("지역삭제테스트")
     @WithAccount("byeoul")
-    @Transactional
     @Test
     void 지역삭제기능() throws Exception {
         Account myAccount = accountRepository.findByNickname("byeoul");
