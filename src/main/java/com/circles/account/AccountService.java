@@ -6,9 +6,11 @@ import com.circles.domain.Zone;
 import com.circles.settings.*;
 import com.circles.zone.ZoneRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,11 +22,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountService implements UserDetailsService {
@@ -59,6 +64,17 @@ public class AccountService implements UserDetailsService {
 
 
     public void sendSignUpConfirmEmail(Account createdAccount) {
+        try {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
+            mimeMessageHelper.setTo(createdAccount.getEmail());
+            mimeMessageHelper.setSubject("회원가입 인증 메일");
+            mimeMessageHelper.setText("/check-email-token?token=" + createdAccount.getEmailCheckToken() + "&email=" + createdAccount.getEmail(), true);
+            javaMailSender.send(mimeMessage);
+        } catch (MessagingException e){
+            log.error("fail to send mail", e);
+        }
+
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setSubject("씨씨 써클가입 인증메일입니다.");
         simpleMailMessage.setTo(createdAccount.getEmail());
